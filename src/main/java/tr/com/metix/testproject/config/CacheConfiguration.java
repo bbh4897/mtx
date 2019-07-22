@@ -43,6 +43,18 @@ public class CacheConfiguration {
             createCache(cm, tr.com.metix.testproject.domain.User.class.getName());
             createCache(cm, tr.com.metix.testproject.domain.Authority.class.getName());
             createCache(cm, tr.com.metix.testproject.domain.User.class.getName() + ".authorities");
+            createCache(cm, tr.com.metix.testproject.domain.Region.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Country.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Location.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Department.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Department.class.getName() + ".employees");
+            createCache(cm, tr.com.metix.testproject.domain.Task.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Task.class.getName() + ".jobs");
+            createCache(cm, tr.com.metix.testproject.domain.Employee.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Employee.class.getName() + ".jobs");
+            createCache(cm, tr.com.metix.testproject.domain.Job.class.getName());
+            createCache(cm, tr.com.metix.testproject.domain.Job.class.getName() + ".tasks");
+            createCache(cm, tr.com.metix.testproject.domain.JobHistory.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
