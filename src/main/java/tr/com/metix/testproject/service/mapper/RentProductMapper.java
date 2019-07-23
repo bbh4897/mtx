@@ -1,6 +1,7 @@
 package tr.com.metix.testproject.service.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import tr.com.metix.testproject.domain.ProductRent;
 import tr.com.metix.testproject.service.ProductRentService;
@@ -11,8 +12,22 @@ public interface RentProductMapper {
 
     RentProductMapper INSTANCE = Mappers.getMapper(RentProductMapper.class);
 
+//    RentProductDTO rentproductToRentproductDTO(ProductRent productRent);
+//    ProductRent productrentDTOToProductrent(RentProductDTO rentProductDTO);
+//
+
+
+    @Mapping(source = "person.id", target = "personId")
+    @Mapping(source = "product.id", target = "productId")
     RentProductDTO rentproductToRentproductDTO(ProductRent productRent);
+
+
+    @Mapping(source = "personId", target = "person")
+    @Mapping(source = "productId", target = "product")
     ProductRent productrentDTOToProductrent(RentProductDTO rentProductDTO);
+
+
+
 
 
 }
