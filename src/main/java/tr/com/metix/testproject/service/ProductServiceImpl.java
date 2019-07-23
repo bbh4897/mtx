@@ -6,6 +6,7 @@ import tr.com.metix.testproject.domain.Product;
 import tr.com.metix.testproject.repository.ProductRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -20,8 +21,19 @@ public class ProductServiceImpl implements ProductService {
 
     // Tüm ürünleri listeleme
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll()
+    {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
+    public void save(Product product) {
+        productRepository.save(product);
     }
 
 

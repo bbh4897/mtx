@@ -6,6 +6,7 @@ import tr.com.metix.testproject.domain.Person;
 import tr.com.metix.testproject.repository.PersonRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,7 +20,13 @@ public class PersonServiceImpl implements PersonService {
 
     // Tüm kişileri listeleme
     @Override
-    public List<Person> findAll() {
+    public List<Person> findAll()
+    {
         return personRepository.findAll();
+    }
+
+    @Override
+    public Optional<Person> findById(Long id) {
+        return personRepository.findById(id);
     }
 }
