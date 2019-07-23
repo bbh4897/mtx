@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.metix.testproject.domain.Product;
 import tr.com.metix.testproject.service.ProductService;
+import tr.com.metix.testproject.service.dto.ProductDTO;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ProductResource {
 
     // Tüm ürünleri listeleme
     @GetMapping("/products")
-    public List<Product> getAllProduct() {
+    public List<ProductDTO> getAllProduct() {
         return productService.findAll();
     }
 

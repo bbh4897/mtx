@@ -11,6 +11,9 @@ import tr.com.metix.testproject.domain.ProductRent;
 import tr.com.metix.testproject.service.PersonService;
 import tr.com.metix.testproject.service.ProductRentService;
 import tr.com.metix.testproject.service.ProductService;
+import tr.com.metix.testproject.service.dto.PersonDTO;
+import tr.com.metix.testproject.service.dto.ProductDTO;
+import tr.com.metix.testproject.service.dto.RentProductDTO;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
 import javax.validation.Valid;
@@ -48,7 +51,8 @@ public class ProductRentResource {
 
     // Kiralanmış tüm ürünleri getirme
     @GetMapping("/productsrent")
-    public List<ProductRent> getAllProductRent(){
+    public List<RentProductDTO> getAllProductRent()
+    {
         return productRentService.findAll();
     }
 
@@ -61,16 +65,16 @@ public class ProductRentResource {
 
     // Teslim tarihi gecikmiş ürünler (end date < now date)
     @GetMapping("/latedelivery")
-    public List<ProductRent> findLateDelivery(){
+    public List<RentProductDTO> findLateDelivery(){
 
-        ProductRent productRent = null;
-        List<ProductRent> late_delivery_products = null;
+        RentProductDTO rentProductDTO = null;
+        List<RentProductDTO> late_delivery_products = null;
 
-        if(productRent.getDeliveryDate()==null){
+        if(rentProductDTO.getDeliveryDate()==null){
             late_delivery_products = productRentService.findAllByEndDateLessThan(Calendar.getInstance().getTime());
         }
         else{
-            late_delivery_products = productRentService.findAllByEndDateLessThan(productRent.getDeliveryDate());
+            late_delivery_products = productRentService.findAllByEndDateLessThan(rentProductDTO.getDeliveryDate());
         }
 
 
@@ -80,25 +84,25 @@ public class ProductRentResource {
 
     // Kirada olan ürünler (Teslim tarihi null)
     @GetMapping("/currentproductrent")
-    public List<ProductRent> AllRentProduct(){
-        List<ProductRent> cpr = productRentService.findAllByDeliveryDateIsNull();
+    public List<RentProductDTO> AllRentProduct(){
+        List<RentProductDTO> cpr = productRentService.findAllByDeliveryDateIsNull();
         return cpr;
     }
 
     // Kiraya Verme ( ürün kiralanabilirse ve kişi banlı değilse)
     @PostMapping("/rentproduct")
-    public ResponseEntity<ProductRent> createRentProduct(@Valid @RequestBody ProductRent productRent) throws URISyntaxException {
+    public ResponseEntity<RentProductDTO> createRentProduct(@Valid @RequestBody RentProductDTO rentProductDTO) throws URISyntaxException {
 
 
-        if(productRent.getPerson().getId()==null) {
+        if(rentProductDTO.getPersonId()==null) {
             throw new BadRequestAlertException("Kişi idsi zorunludur.", ENTITY_NAME, "testt");
         }
-        if(productRent.getProduct().getId()==null) {
+        if(rentProductDTO.getProductId()==null) {
             throw new BadRequestAlertException("Ürün idsi zorunludur.", ENTITY_NAME, "testt");
         }
 
-        Optional<Person> person = personService.findById(productRent.getPerson().getId());
-        Optional<Product> product = productService.findById(productRent.getProduct().getId());
+        Optional<PersonDTO> person = personService.findById(rentProductDTO.getPersonId());
+        Optional<ProductDTO> product = productService.findById(rentProductDTO.getProductId());
 
         if(!person.isPresent()) {
             throw new BadRequestAlertException("Bu idye kayıtlı kişi bulunamadı.", ENTITY_NAME, "testt");
@@ -120,26 +124,26 @@ public class ProductRentResource {
         product.get().setRent(true);
         productService.save(product.get()); // product'ın güncellenmiş hali save edildi.
 
-        productRent.setPerson(person.get());
-        productRent.setProduct(product.get());
+        rentProductDTO.setPersonId(person.get().getId());
+        rentProductDTO.setProductId(product.get().getId());
 
-        productRentService.save(productRent);
+        productRentService.save(rentProductDTO);
 
 
-        return ResponseEntity.created(new URI("/api/rentproduct/" + productRent.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, productRent.getId().toString()))
-            .body(productRent);
+        return ResponseEntity.created(new URI("/api/rentproduct/" + rentProductDTO.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, rentProductDTO.getId().toString()))
+            .body(rentProductDTO);
     }
 
 
     // Kirayı Bitirme
     @PutMapping("/productsrent")
-    public ResponseEntity<ProductRent> updateProductRent(@RequestBody ProductRent productRent) throws URISyntaxException {
+    public ResponseEntity<RentProductDTO> updateProductRent(@RequestBody RentProductDTO rentProductDTO) throws URISyntaxException {
 
 
-        Optional<Product> product = productService.findById(productRent.getProduct().getId());
-        Optional<Person> person = personService.findById(productRent.getPerson().getId());
-        Optional<ProductRent> pr = productRentService.findById(productRent.getId());
+        Optional<ProductDTO> product = productService.findById(rentProductDTO.getProductId());
+        Optional<PersonDTO> person = personService.findById(rentProductDTO.getPersonId());
+        Optional<RentProductDTO> pr = productRentService.findById(rentProductDTO.getId());
 //
         if( (!pr.isPresent())) {
             throw new BadRequestAlertException("Bu idye kayıtlı kiralama işlemi bulunamadı ", ENTITY_NAME, "testt");
@@ -150,26 +154,26 @@ public class ProductRentResource {
         }
 
 
-        System.out.println("teslim tarihi : " + productRent.getDeliveryDate());
-        System.out.println("IDDDDD : " + productRent.getId());
+        System.out.println("teslim tarihi : " + rentProductDTO.getDeliveryDate());
+        System.out.println("IDDDDD : " + rentProductDTO.getId());
 
         // Teslim Tarihi anlık tarih
-        productRent.setDeliveryDate(Calendar.getInstance().getTime());
-        System.out.println("Teslim tarihi anlık : " + productRent.getDeliveryDate());
+        rentProductDTO.setDeliveryDate(Calendar.getInstance().getTime());
+        System.out.println("Teslim tarihi anlık : " + rentProductDTO.getDeliveryDate());
 
         // Ürünün kiralanabilir olması
         product.get().setRent(false);
         productService.save(product.get()); // Ürünün güncellenmiş hali save edildi.
 
-        productRent.setProduct(product.get());
+        rentProductDTO.setProductId(product.get().getId());
 
-        productRentService.save(productRent);
+        productRentService.save(rentProductDTO);
 
 
 
-        return ResponseEntity.created(new URI("/api/rentproduct/" + productRent.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, productRent.getId().toString()))
-            .body(productRent);
+        return ResponseEntity.created(new URI("/api/rentproduct/" + rentProductDTO.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, rentProductDTO.getId().toString()))
+            .body(rentProductDTO);
     }
 
 }

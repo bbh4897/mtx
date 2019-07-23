@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.metix.testproject.domain.Person;
 import tr.com.metix.testproject.service.PersonService;
+import tr.com.metix.testproject.service.dto.PersonDTO;
 
 import java.util.List;
 
@@ -27,7 +28,9 @@ public class PersonResource {
 
     // Tüm kişileri listeleme
     @GetMapping("/persons")
-    public List<Person> getAllPerson() {
+    public List<PersonDTO> getAllPerson()
+    {
+
         return personService.findAll();
     }
 
