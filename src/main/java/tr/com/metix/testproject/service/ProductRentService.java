@@ -1,6 +1,7 @@
 package tr.com.metix.testproject.service;
 
 import tr.com.metix.testproject.domain.ProductRent;
+import tr.com.metix.testproject.service.dto.RentProductDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -8,17 +9,17 @@ import java.util.Optional;
 
 public interface ProductRentService {
 
-    List<ProductRent> findAll(); // Tüm kiralanmıs urunlerı getırme
+    List<RentProductDTO> findAll(); // Tüm kiralanmıs urunlerı getırme
 
 //    Optional<ProductRent> findOne(Long id);  // Tek bir kiralanmış ürün getırme
 
     // Teslim tarihi gecikmiş ürünler ()
-    List<ProductRent> findAllByEndDateLessThan(Date date);
+    List<RentProductDTO> findAllByEndDateLessThan(Date date);
     // Şuan kirada olan tüm ürünler
-    List<ProductRent> findAllByDeliveryDateIsNull();
+    List<RentProductDTO> findAllByDeliveryDateIsNull();
 
 
-    void save(ProductRent productRent);
+    RentProductDTO save(RentProductDTO productRentDto);
 
-    Optional<ProductRent> findById(Long id);
+    Optional<RentProductDTO> findById(Long id);
 }

@@ -1,15 +1,16 @@
 package tr.com.metix.testproject.service;
 
 import tr.com.metix.testproject.domain.Product;
+import tr.com.metix.testproject.service.dto.ProductDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
 
-    List<Product> findAll(); // Tüm urunlerı getırme
+    List<ProductDTO> findAll(); // Tüm urunlerı getırme
 
-    Optional<Product> findById(Long id);  // Tek bir ürün getırme
+    Optional<ProductDTO> findById(Long id);  // Tek bir ürün getırme
 
-    void save(Product product);
+    ProductDTO save(ProductDTO productDTO);
 }
