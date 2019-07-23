@@ -22,8 +22,8 @@ public interface RentProductMapper {
     RentProductDTO rentproductToRentproductDTO(ProductRent productRent);
 
 
-    @Mapping(source = "personId", target = "person")
-    @Mapping(source = "productId", target = "product")
+    @Mapping(source = "personId", target = "person.id")
+    @Mapping(source = "productId", target = "product.id")
     ProductRent productrentDTOToProductrent(RentProductDTO rentProductDTO);
 
 
