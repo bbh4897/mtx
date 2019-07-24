@@ -7,7 +7,6 @@ import tr.com.metix.testproject.domain.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
-
     // Ürün Kirada mı? (Kiralanabilir mi? / true )
     //boolean findAllByRentIs();
 

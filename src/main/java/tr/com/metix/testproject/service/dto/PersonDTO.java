@@ -1,6 +1,6 @@
 package tr.com.metix.testproject.service.dto;
 
-import javax.persistence.*;
+
 import java.io.Serializable;
 
 public class PersonDTO implements Serializable {

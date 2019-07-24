@@ -85,19 +85,19 @@ public class ProductRentResource {
     // Kirada olan ürünler (Teslim tarihi null)
     @GetMapping("/currentproductrent")
     public List<RentProductDTO> AllRentProduct(){
-        List<RentProductDTO> cpr = productRentService.findAllByDeliveryDateIsNull();
-        return cpr;
-    }
-
-    // Kiraya Verme ( ürün kiralanabilirse ve kişi banlı değilse)
-    @PostMapping("/rentproduct")
-    public ResponseEntity<RentProductDTO> createRentProduct(@Valid @RequestBody RentProductDTO rentProductDTO) throws URISyntaxException {
-
-
-        if(rentProductDTO.getPersonId()==null) {
-            throw new BadRequestAlertException("Kişi idsi zorunludur.", ENTITY_NAME, "testt");
+            List<RentProductDTO> cpr = productRentService.findAllByDeliveryDateIsNull();
+            return cpr;
         }
-        if(rentProductDTO.getProductId()==null) {
+
+            // Kiraya Verme ( ürün kiralanabilirse ve kişi banlı değilse)
+            @PostMapping("/rentproduct")
+            public ResponseEntity<RentProductDTO> createRentProduct(@Valid @RequestBody RentProductDTO rentProductDTO) throws URISyntaxException {
+
+
+                if(rentProductDTO.getPersonId()==null) {
+                    throw new BadRequestAlertException("Kişi idsi zorunludur.", ENTITY_NAME, "testt");
+                }
+                if(rentProductDTO.getProductId()==null) {
             throw new BadRequestAlertException("Ürün idsi zorunludur.", ENTITY_NAME, "testt");
         }
 

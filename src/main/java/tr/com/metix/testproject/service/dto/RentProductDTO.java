@@ -1,10 +1,6 @@
 package tr.com.metix.testproject.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import tr.com.metix.testproject.domain.Person;
-import tr.com.metix.testproject.domain.Product;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 

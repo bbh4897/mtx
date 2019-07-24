@@ -22,4 +22,6 @@ public interface ProductRentService {
     RentProductDTO save(RentProductDTO productRentDto);
 
     Optional<RentProductDTO> findById(Long id);
+
+
 }
