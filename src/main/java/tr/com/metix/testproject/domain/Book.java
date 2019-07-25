@@ -40,7 +40,7 @@ public class Book implements Serializable {
     @JoinTable(name = "book_language",
         joinColumns = @JoinColumn(name = "book_id"),
         inverseJoinColumns = @JoinColumn(name = "language_id"))
-    private Set<Language> languages = new HashSet<>(); // Yayımlandığı diller
+    private Set<Language> language = new HashSet<>(); // Yayımlandığı diller
 
     @ManyToOne
     @JsonIgnoreProperties("book")
@@ -88,11 +88,11 @@ public class Book implements Serializable {
     }
 
     public Set<Language> getLanguages() {
-        return languages;
+        return language;
     }
 
     public void setLanguages(Set<Language> languages) {
-        this.languages = languages;
+        this.language = languages;
     }
 
     public Author getAuthor() {
