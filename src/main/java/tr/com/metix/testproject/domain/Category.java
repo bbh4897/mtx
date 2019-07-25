@@ -16,15 +16,14 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name="category_id")
     private Long id;
 
     @Column(name = "category_name")
     private String category_name;
 
     ///////////////////
-    @ManyToMany(mappedBy = "category")
-    @JsonIgnore
-    private Set<Book> books = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -42,11 +41,4 @@ public class Category implements Serializable {
         this.category_name = category_name;
     }
 
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
 }

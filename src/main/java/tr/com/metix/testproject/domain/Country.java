@@ -16,22 +16,14 @@ public class Country implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name="country_id")
     private Long id;
 
     @Column(name = "country_name")
     private String country_name;
 
-    @ManyToMany(mappedBy = "country")
-    @JsonIgnore
-    private Set<Country> country = new HashSet<>();
 
-    public Set<Country> getCountry() {
-        return country;
-    }
 
-    public void setCountry(Set<Country> country) {
-        this.country = country;
-    }
 
     public Long getId() {
         return id;

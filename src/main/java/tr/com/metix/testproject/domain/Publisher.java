@@ -14,6 +14,7 @@ public class Publisher implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name="publisher_id")
     private Long id;
 
     @Column(name = "publisher_name")
@@ -21,8 +22,8 @@ public class Publisher implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "publisher_country",
-        joinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "country_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "publisher_id"),
+        inverseJoinColumns = @JoinColumn(name = "country_id"))
     private Set<Country> country = new HashSet<>();
 
 

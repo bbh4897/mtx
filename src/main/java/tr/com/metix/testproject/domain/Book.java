@@ -15,6 +15,7 @@ public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name="book_id")
     private Long id;
 
     @Column(name = "book_name")
@@ -30,15 +31,15 @@ public class Book implements Serializable {
     /////////////////////////////////
     @ManyToMany
     @JoinTable(name = "book_category",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> category = new HashSet<>();
 
 
     @ManyToMany
     @JoinTable(name = "book_language",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "language_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "language_id"))
     private Set<Language> languages = new HashSet<>(); // Yayımlandığı diller
 
     @ManyToOne

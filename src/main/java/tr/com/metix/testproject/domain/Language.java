@@ -15,6 +15,7 @@ public class Language implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name="language_id")
     private Long id;
 
 
@@ -22,9 +23,7 @@ public class Language implements Serializable {
     private String language_name;
 
     ///////////////////
-    @ManyToMany(mappedBy = "language")
-    @JsonIgnore
-    private Set<Book> books = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -42,11 +41,5 @@ public class Language implements Serializable {
         this.language_name = language_name;
     }
 
-    public Set<Book> getBooks() {
-        return books;
-    }
 
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
 }
