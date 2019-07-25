@@ -1,7 +1,11 @@
 package tr.com.metix.testproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "language")
@@ -17,9 +21,9 @@ public class Language implements Serializable {
     private String language_name;
 
     ///////////////////
-//    @ManyToMany(mappedBy = "language")
-//    @JsonIgnore
-//    private Set<Book> books = new HashSet<>();
+    @ManyToMany(mappedBy = "language")
+    @JsonIgnore
+    private Set<Book> books = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -37,11 +41,11 @@ public class Language implements Serializable {
         this.language_name = language_name;
     }
 
-//    public Set<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(Set<Book> books) {
-//        this.books = books;
-//    }
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
 }

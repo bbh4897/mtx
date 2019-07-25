@@ -103,4 +103,3 @@ public class Book implements Serializable {
         this.author = author;
     }
 }
-
