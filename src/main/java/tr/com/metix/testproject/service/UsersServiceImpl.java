@@ -35,16 +35,16 @@ public class UsersServiceImpl implements UsersService {
         this.usersMapper = usersMapper;
     }
 
-    @Override
-    public List<UsersDTO> findAll() {
-        return usersRepository.findAll().stream()
-            .map(usersMapper::usersToUsersDTO)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
+//    @Override
+//    public List<UsersDTO> findAll() {
+//        return usersRepository.findAll().stream()
+//            .map(usersMapper::usersToUsersDTO)
+//            .collect(Collectors.toCollection(LinkedList::new));
+//    }
 
     @Override
     public Optional<UsersDTO> findById(Long id) {
-        return usersRepository.findById(id).map(usersMapper::usersToUsersDTO);
+        return usersRepository.findById(id).map(usersMapper::usersToUsersDTO2);
     }
 
 //    @Override

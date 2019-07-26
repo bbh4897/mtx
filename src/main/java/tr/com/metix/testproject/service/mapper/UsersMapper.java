@@ -11,9 +11,9 @@ public interface UsersMapper {
 
     UsersMapper INSTANCE = Mappers.getMapper(UsersMapper.class);
 
-   // @Mapping(source = "users.id", target = "userId")
-    UsersDTO usersToUsersDTO(Users users);
+    @Mapping(source = "users.id", target = "userId")
+    UsersDTO usersToUsersDTO2(Users users);
 
- //   @Mapping(source = "userId", target = "users.id")
-    Users usersDTOToUsers(UsersDTO usersDTO);
+    @Mapping(source = "userId", target = "users.id")
+    Users usersDTOToUsers2(UsersDTO usersDTO);
 }

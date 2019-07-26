@@ -15,7 +15,6 @@ public class Users implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name="users_id")
     private Long id;
 
     @Column(name = "users_name")
