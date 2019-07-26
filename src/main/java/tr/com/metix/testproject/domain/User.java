@@ -1,5 +1,6 @@
 package tr.com.metix.testproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import tr.com.metix.testproject.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,6 +84,18 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+
+    @ManyToOne
+    @JsonIgnoreProperties("jhi_user")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @JsonIgnore
     @ManyToMany
