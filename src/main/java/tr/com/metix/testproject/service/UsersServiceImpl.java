@@ -47,44 +47,44 @@ public class UsersServiceImpl implements UsersService {
         return usersRepository.findById(id).map(usersMapper::usersToUsersDTO);
     }
 
-    @Override
-    public List<String> findAllCustomer(@RequestParam List<Long> managerId) { // Parametre olarak managerId verıldı (2)
-
-        System.out.println("testtttttt : " + managerId);
-
-        List<Users> users = usersRepository.findAllById(managerId); // managerId'si ? olan userın bılgılerı getırıldı (userId, name, lastname, managerId)
-
-        System.out.println("testtttttt : " + users.size());
-        System.out.println("testtttttt : " + users);
-
-        if(!users.isEmpty()){
-            throw new BadRequestAlertException("Bu id'ye sahip yönetici bulunmamaktadır.", ENTITY_NAME, "testt");
-        }
-
-        ArrayList<Long> arrayList = new ArrayList<>();
-        ArrayList<String> arrayList2 = new ArrayList<>();
-        List<CustomerDTO> customers = null;
-     //   arrayList.add(managerId);
-
-//        for (UsersDTO u: users)
-//        {
-//            arrayList.add(u.getId());
+//    @Override
+//    public List<String> findAllCustomer(@RequestParam List<Long> managerId) { // Parametre olarak managerId verıldı (2)
+//
+//        System.out.println("testtttttt : " + managerId);
+//
+//        List<Users> users = usersRepository.findAllById(managerId); // managerId'si ? olan userın bılgılerı getırıldı (userId, name, lastname, managerId)
+//
+//        System.out.println("testtttttt : " + users.size());
+//        System.out.println("testtttttt : " + users);
+//
+//        if(!users.isEmpty()){
+//            throw new BadRequestAlertException("Bu id'ye sahip yönetici bulunmamaktadır.", ENTITY_NAME, "testt");
 //        }
 //
-//        for(Long c : arrayList){
-//            customers  = customerRepository.findUsersByIdContains(c);
-//        }
+//        ArrayList<Long> arrayList = new ArrayList<>();
+//        ArrayList<String> arrayList2 = new ArrayList<>();
+//        List<CustomerDTO> customers = null;
+//     //   arrayList.add(managerId);
+//
+////        for (UsersDTO u: users)
+////        {
+////            arrayList.add(u.getId());
+////        }
+////
+////        for(Long c : arrayList){
+////            customers  = customerRepository.findUsersByIdContains(c);
+////        }
+////
+////
+////        for (CustomerDTO c: customers)
+////        {
+////            arrayList2.add(c.getCustomer_name());
+////        }
+////
 //
 //
-//        for (CustomerDTO c: customers)
-//        {
-//            arrayList2.add(c.getCustomer_name());
-//        }
-//
-
-
-        return arrayList2;
-    }
+//        return arrayList2;
+//    }
 
 
 }

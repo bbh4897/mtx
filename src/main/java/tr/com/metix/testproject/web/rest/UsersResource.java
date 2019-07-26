@@ -26,11 +26,11 @@ public class UsersResource {
     }
 
 
-    @GetMapping("/customers")
-    public List<String> getAllCustomer(ArrayList<Long> managerId)
-    {
-        return customerService.findAllCustomer(managerId);
-    }
+//    @GetMapping("/customers")
+//    public List<String> getAllCustomer(ArrayList<Long> managerId)
+//    {
+//        return customerService.findAllCustomer(managerId);
+//    }
 
 
 

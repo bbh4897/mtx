@@ -10,8 +10,10 @@ import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<Users, Long> {
 
-    Optional<UsersDTO> findById(int is);
+    Optional<Users> findById(Long id);
     List<UsersDTO> findAllById(ArrayList<Long[]> managerId);
 //    List<UsersDTO> findUsersByIdContains(ArrayList<Long[]> managerId);
+
+
 
 }

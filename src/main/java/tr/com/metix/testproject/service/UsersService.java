@@ -14,5 +14,5 @@ public interface UsersService {
     Optional<UsersDTO> findById(Long id);
    // Optional<UsersDTO> findAllById(Long[] userId);
 
-    List<String> findAllCustomer(List<Long> managerId); // parametre olarak managerId alınacak list seklınde
+    //List<String> findAllCustomer(List<Long> managerId); // parametre olarak managerId alınacak list seklınde
 }
