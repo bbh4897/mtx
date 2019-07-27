@@ -12,5 +12,6 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 //    List<CustomerDTO> findAllByIdContains(ArrayList<Long[]> userId);
 
     List<CustomerDTO> findUsersByIdContains(Long userId);
+    List<Customer> findAll();
 
 }

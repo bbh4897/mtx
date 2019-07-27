@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.UsersService;
+import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UsersDTO;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
@@ -44,14 +45,17 @@ public class UsersResource {
 
 
     @GetMapping("/usersall")
-    public List<UsersDTO> getUser(Long id)
+    public List<CustomerDTO> getUser(Long id)
     {
 
         List<UsersDTO> usersDTOS = usersService.findAll(); // tüm kişilerin toplu bılgılerı
-
         Optional<UsersDTO> user = usersService.findById(id); // parametre olarak verılen ıd nın kısı bılgısı
 
+        List<CustomerDTO> customerDTOS = customerService.findAll(); // tüm musterılerın toplu bılgılerı
+
+
         ArrayList<Long> uyusan_idler = new ArrayList<>();
+        ArrayList<String> musteri_isimleri = new ArrayList<>();
 
     try {
         for (int i = 0; i < usersDTOS.size() ; i++) {
@@ -81,12 +85,38 @@ public class UsersResource {
             System.out.println("\n Uyusan ıdler iddddd : " + uyusan_idler.get(j));
         }
 
+        //// managerId lerı esıtlenen userId ler : {2,3}
+
+        ////// musterıler
+
+        for(int i=0; i<customerDTOS.size(); i++){ // {2,3}
+
+            for(int j=0; j<uyusan_idler.size(); j++){
+
+                if(customerDTOS.get(i).getUsersId() == uyusan_idler.get(j)){
+
+                    System.out.println("\n customerId ve userId uyustu : " + customerDTOS.get(i).getId() + " / " + uyusan_idler.get(j));
+                    musteri_isimleri.add(customerDTOS.get(i).getCustomer_name());
+                }
+
+                else{
+                    System.out.println("\n customerId ve userId UYUSMADI : " + customerDTOS.get(i).getId() + " / " + uyusan_idler.get(j));
+                }
+
+            }
+
+
+        }
+        for(int i=0; i<musteri_isimleri.size(); i++) {
+            System.out.println("\n Musterı ısımlerı : " + musteri_isimleri.get(i));
+        }
+
 
     }catch (Exception e){
        e.printStackTrace();
     }
 
-        return usersDTOS;
+        return customerDTOS;
     }
 
 }

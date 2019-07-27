@@ -43,6 +43,15 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id).map(customerMapper::customerToCustomerDTO);
 }
 
+    @Override
+    public List<CustomerDTO> findAll() {
+
+        return  customerRepository.findAll().stream().map(customerMapper::customerToCustomerDTO)
+            .collect(Collectors.toCollection(LinkedList::new));
+
+
+    }
+
 //
 
 

@@ -1,6 +1,8 @@
 package tr.com.metix.testproject.service;
 
 import tr.com.metix.testproject.service.dto.CustomerDTO;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
@@ -10,4 +12,5 @@ public interface CustomerService {
 //    Optional<CustomerDTO> findById(Long id);
 
     Optional<CustomerDTO> findById(Long id);
+    List<CustomerDTO> findAll();
 }
