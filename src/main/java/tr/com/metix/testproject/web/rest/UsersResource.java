@@ -45,7 +45,7 @@ public class UsersResource {
 
 
     @GetMapping("/usersall")
-    public List<CustomerDTO> getUser(Long id)
+    public List<String> getUser(Long id)
     {
 
         List<UsersDTO> usersDTOS = usersService.findAll(); // tüm kişilerin toplu bılgılerı
@@ -118,7 +118,7 @@ public class UsersResource {
        e.printStackTrace();
     }
 
-        return customerDTOS;
+        return musteri_isimleri;
     }
 
 }
