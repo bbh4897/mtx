@@ -56,6 +56,7 @@ public class UsersResource {
 
         ArrayList<Long> uyusan_idler = new ArrayList<>();
         ArrayList<String> musteri_isimleri = new ArrayList<>();
+        ArrayList<Long> sonrakitur = new ArrayList<>();
 
 //        uyusan_idler.add(user.get().getId());
         musteri_isimleri.add(musteri.get().getCustomer_name());
@@ -100,6 +101,8 @@ public class UsersResource {
 
                     System.out.println("\n customerId ve userId uyustu : " + customerDTOS.get(i).getId() + " / " + uyusan_idler.get(j));
                     musteri_isimleri.add(customerDTOS.get(i).getCustomer_name());
+
+
                 }
 
                 else{
@@ -110,9 +113,22 @@ public class UsersResource {
 
 
         }
+
         for(int i=0; i<musteri_isimleri.size(); i++) {
             System.out.println("\n Musterı ısımlerı : " + musteri_isimleri.get(i));
         }
+
+        ////////////////////// recursive
+
+
+        System.out.println("\n\n************* RECURSİVE ***********\n\n");
+
+        for(int i=0; i<uyusan_idler.size();i++) {
+
+            getUser(uyusan_idler.get(i));
+
+        }
+
 
 
     }catch (Exception e){
