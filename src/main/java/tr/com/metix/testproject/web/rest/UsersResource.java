@@ -11,9 +11,7 @@ import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UsersDTO;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -23,7 +21,8 @@ public class UsersResource {
 
     private final UsersService usersService;
     private final CustomerService customerService;
-
+    ArrayList<String>  musteri_isimleri = new ArrayList<>();
+    Set<String> set_musteri = new HashSet<String>();
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -45,7 +44,7 @@ public class UsersResource {
 
 
     @GetMapping("/usersall")
-    public List<String> getUser(Long id)
+    public Set<String> getUser(Long id)
     {
 
         List<UsersDTO> usersDTOS = usersService.findAll(); // tüm kişilerin toplu bılgılerı
@@ -55,11 +54,13 @@ public class UsersResource {
         Optional<CustomerDTO> musteri = customerService.findById(id);
 
         ArrayList<Long> uyusan_idler = new ArrayList<>();
-        ArrayList<String> musteri_isimleri = new ArrayList<>();
+
         ArrayList<Long> sonrakitur = new ArrayList<>();
+
 
 //        uyusan_idler.add(user.get().getId());
         musteri_isimleri.add(musteri.get().getCustomer_name());
+
 
     try {
         for (int i = 0; i < usersDTOS.size() ; i++) {
@@ -135,7 +136,8 @@ public class UsersResource {
        e.printStackTrace();
     }
 
-        return musteri_isimleri;
+        Set<String> set_musteri = new HashSet<String>(musteri_isimleri);
+        return set_musteri;
     }
 
 }
