@@ -57,6 +57,8 @@ public class UsersResource {
         ArrayList<Long> uyusan_idler = new ArrayList<>();
         ArrayList<String> musteri_isimleri = new ArrayList<>();
 
+        uyusan_idler.add(user.get().getId());
+
     try {
         for (int i = 0; i < usersDTOS.size() ; i++) {
 
