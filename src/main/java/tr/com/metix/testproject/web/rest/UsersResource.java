@@ -1,14 +1,17 @@
 package tr.com.metix.testproject.web.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.UsersService;
-import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UsersDTO;
+import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,33 +27,55 @@ public class UsersResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-
-    public UsersResource(UsersService usersService, CustomerService customerService, CustomerService customerService1) {
+    @Autowired
+    public UsersResource(UsersService usersService, CustomerService customerService) {
         this.usersService = usersService;
-        this.customerService = customerService1;
+        this.customerService = customerService;
     }
 
-    @GetMapping("/user")
-    public Optional<UsersDTO> getUser(Long id)
-    {
-
-        return usersService.findById(id);
-    }
-
-    // UserId sı ? olan kısılerın musterısını getır
+//
+//    // UserId sı ? olan kısılerın user ozellıklerını getır
 //    @GetMapping("/user")
-//    public Optional<CustomerDTO> getUser(Long id)
+//    public Optional<UsersDTO> getUser(Long id)
 //    {
 //
-//        return customerService.findById(id);
-//    }
-
-//    @GetMapping("/customers")
-//    public List<String> getAllCustomer(ArrayList<Long> managerId)
-//    {
-//        return customerService.findAllCustomer(managerId);
+//        return usersService.findById(id);
 //    }
 
 
+    @GetMapping("/usersall")
+    public List<UsersDTO> getUser(Long id)
+    {
+
+        List<UsersDTO> usersDTOS = usersService.findAll(); // tüm kişilerin toplu bılgılerı
+
+        Optional<UsersDTO> user = usersService.findById(id); // parametre olarak verılen ıd nın kısı bılgısı
+
+
+
+        for(int i=0; i<=usersDTOS.size();i++){
+
+            if(usersDTOS.get(i).getUserId()==user.get().getId()){
+                System.out.println("\nuyustu : " + usersDTOS.get(i) );
+                System.out.println("userID :  : " + user.get().getId() + " managerId tüm: " + usersDTOS.get(i).getUserId() );
+            }
+            else{
+                System.out.println("\nuyusmadı : " + usersDTOS.get(i) );
+                System.out.println("userID :  : " + user.get().getId() + " managerId tüm: " + usersDTOS.get(i).getUserId() + "\n" );
+            }
+
+//            System.out.println("tum lıstenın kısı ıd sı : " + usersDTOS.get(i).getId());
+//            System.out.println("tum lıstenın manager ıd sı : " + usersDTOS.get(i).getUserId());
+//
+//            System.out.println("userrrr ıd: " + user.get().getId());
+//            System.out.println("userrrr managerID: " + user.get().getUserId());
+//
+//            System.out.println("parametre : " + id);
+
+        }
+
+
+        return usersDTOS;
+    }
 
 }
