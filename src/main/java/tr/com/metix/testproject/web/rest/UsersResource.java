@@ -51,17 +51,20 @@ public class UsersResource {
 
         Optional<UsersDTO> user = usersService.findById(id); // parametre olarak verılen ıd nın kısı bılgısı
 
+        ArrayList<Long> uyusan_idler = new ArrayList<>();
 
+    try {
+        for (int i = 0; i < usersDTOS.size() ; i++) {
 
-        for(int i=0; i<=usersDTOS.size();i++){
+            if (usersDTOS.get(i).getUserId() == user.get().getId()) {
+                System.out.println("\nuyustu : " + usersDTOS.get(i));
+                System.out.println("userID :  : " + user.get().getId() + " managerId tüm: " + usersDTOS.get(i).getUserId());
 
-            if(usersDTOS.get(i).getUserId()==user.get().getId()){
-                System.out.println("\nuyustu : " + usersDTOS.get(i) );
-                System.out.println("userID :  : " + user.get().getId() + " managerId tüm: " + usersDTOS.get(i).getUserId() );
-            }
-            else{
-                System.out.println("\nuyusmadı : " + usersDTOS.get(i) );
-                System.out.println("userID :  : " + user.get().getId() + " managerId tüm: " + usersDTOS.get(i).getUserId() + "\n" );
+                uyusan_idler.add(usersDTOS.get(i).getId());
+
+            } else {
+                System.out.println("\nuyusmadı : " + usersDTOS.get(i));
+                System.out.println("userID :  : " + user.get().getId() + " managerId tüm: " + usersDTOS.get(i).getUserId() + "\n");
             }
 
 //            System.out.println("tum lıstenın kısı ıd sı : " + usersDTOS.get(i).getId());
@@ -74,6 +77,14 @@ public class UsersResource {
 
         }
 
+        for(int j=0; j<uyusan_idler.size();j++){
+            System.out.println("\n Uyusan ıdler iddddd : " + uyusan_idler.get(j));
+        }
+
+
+    }catch (Exception e){
+       e.printStackTrace();
+    }
 
         return usersDTOS;
     }
