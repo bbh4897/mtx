@@ -52,12 +52,13 @@ public class UsersResource {
         Optional<UsersDTO> user = usersService.findById(id); // parametre olarak verılen ıd nın kısı bılgısı
 
         List<CustomerDTO> customerDTOS = customerService.findAll(); // tüm musterılerın toplu bılgılerı
-
+        Optional<CustomerDTO> musteri = customerService.findById(id);
 
         ArrayList<Long> uyusan_idler = new ArrayList<>();
         ArrayList<String> musteri_isimleri = new ArrayList<>();
 
-        uyusan_idler.add(user.get().getId());
+//        uyusan_idler.add(user.get().getId());
+        musteri_isimleri.add(musteri.get().getCustomer_name());
 
     try {
         for (int i = 0; i < usersDTOS.size() ; i++) {
