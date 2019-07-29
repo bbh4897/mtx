@@ -24,7 +24,7 @@ public class Customer implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("customer")
-    private Users users;
+    private User owner;
 
 
     ///////////////////////////////////////
@@ -54,11 +54,11 @@ public class Customer implements Serializable {
         this.customer_lastname = customer_lastname;
     }
 
-    public Users getUsers() {
-        return users;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

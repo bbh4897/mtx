@@ -8,6 +8,7 @@ import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
 import tr.com.metix.testproject.security.SecurityUtils;
 import tr.com.metix.testproject.service.dto.UserDTO;
+import tr.com.metix.testproject.service.mapper.UserMapper;
 import tr.com.metix.testproject.service.util.RandomUtil;
 import tr.com.metix.testproject.web.rest.errors.*;
 
@@ -43,11 +44,31 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    private final UserMapper userMapper;
+
+    //////////////////////////////////////////
+
+    public List<UserDTO> findAllByManager_IdIn(List<Long> ids){
+
+        return userRepository.findAllByManager_IdIn(ids).stream().map(userMapper::userToUserDTO)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public   List<UserDTO> findAll(){
+
+        return userRepository.findAll().stream().map(userMapper::userToUserDTO)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+
+    //////////////////////////////////////////
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {

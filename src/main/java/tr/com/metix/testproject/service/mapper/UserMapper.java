@@ -1,5 +1,7 @@
 package tr.com.metix.testproject.service.mapper;
 
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import tr.com.metix.testproject.domain.Authority;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.service.dto.UserDTO;
@@ -18,6 +20,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserMapper {
 
+
+    /////////////////////////////////////////////////
+
+   // UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+
+
+    ////////////////////////////////////////////////
+
     public List<UserDTO> usersToUserDTOs(List<User> users) {
         return users.stream()
             .filter(Objects::nonNull)
@@ -25,9 +36,11 @@ public class UserMapper {
             .collect(Collectors.toList());
     }
 
+    @Mapping(source = "manager.id", target = "managerId")
     public UserDTO userToUserDTO(User user) {
         return new UserDTO(user);
     }
+
 
     public List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
         return userDTOs.stream()
@@ -35,7 +48,7 @@ public class UserMapper {
             .map(this::userDTOToUser)
             .collect(Collectors.toList());
     }
-
+    @Mapping(source = "managerId", target = "manager.id")
     public User userDTOToUser(UserDTO userDTO) {
         if (userDTO == null) {
             return null;

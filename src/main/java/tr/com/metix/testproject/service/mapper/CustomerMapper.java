@@ -9,11 +9,11 @@ import tr.com.metix.testproject.service.dto.CustomerDTO;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
-    CustomerDTO INSTANCE = Mappers.getMapper(CustomerDTO.class);
+    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    @Mapping(source = "users.id", target = "usersId")
+    @Mapping(source = "owner.id", target = "ownerId")
     CustomerDTO customerToCustomerDTO(Customer customer);
 
-    @Mapping(source = "usersId", target = "users.id")
+    @Mapping(source = "ownerId", target = "owner.id")
     Customer customerDTOToCustomer(CustomerDTO customerDTO);
 }

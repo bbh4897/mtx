@@ -4,8 +4,10 @@ import tr.com.metix.testproject.config.Constants;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
+import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.MailService;
 import tr.com.metix.testproject.service.UserService;
+import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 import tr.com.metix.testproject.web.rest.errors.EmailAlreadyUsedException;
@@ -70,12 +72,17 @@ public class UserResource {
 
     private final UserRepository userRepository;
 
+    private final CustomerService customerService;
+
+    private static final String ENTITY_NAME = "user";
+
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService, UserRepository userRepository, CustomerService customerService, MailService mailService) {
 
         this.userService = userService;
         this.userRepository = userRepository;
+        this.customerService = customerService;
         this.mailService = mailService;
     }
 
@@ -190,4 +197,34 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }
+
+
+    /////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/customers/{id}")
+    public List<UserDTO> getCustomers() {
+
+        List<Long> ids = new ArrayList<>();
+        ids.add(1L);
+
+
+        List<UserDTO> userDTOS = userService.findAllByManager_IdIn(ids); // ManagerId si ? olanların lıstesı
+
+        if(userDTOS.isEmpty()){
+
+            throw new BadRequestAlertException("Bu Id'ye sahip manager bulunamadı", ENTITY_NAME, "testt");
+
+        }
+
+      //  List<CustomerDTO> customerDTOS = customerService.findAllByUsers_IdIn(ids);
+
+        System.out.println("testsss : " + userDTOS.size());
+
+
+        return userDTOS;
+    }
+
+
+
+
 }

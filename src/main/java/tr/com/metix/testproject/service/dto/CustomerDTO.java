@@ -7,7 +7,7 @@ public class CustomerDTO implements Serializable {
     private Long id;
     private String customer_name;
     private String customer_lastname;
-    private Long usersId;
+    private Long ownerId;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class CustomerDTO implements Serializable {
         this.customer_lastname = customer_lastname;
     }
 
-    public Long getUsersId() {
-        return usersId;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setUsersId(Long usersId) {
-        this.usersId = usersId;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }
