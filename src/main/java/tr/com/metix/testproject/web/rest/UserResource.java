@@ -201,27 +201,52 @@ public class UserResource {
 
     /////////////////////////////////////////////////////////////////////
 
+    ArrayList<Long> user_customer_id = new ArrayList<>();
+    ArrayList<String> customer_name = new ArrayList<>();
+    List<CustomerDTO> customerDTOS ;
+
+
     @GetMapping("/customers/{id}")
-    public List<UserDTO> getCustomers() {
+    public Set<String> getCustomers(@PathVariable Long id) {
 
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
+//        List<Long> ids = new ArrayList<>();
+//        ids.add(id);
 
 
-        List<UserDTO> userDTOS = userService.findAllByManager_IdIn(ids); // ManagerId si ? olanların lıstesı
+        System.out.println("IDSS : " + id);
+
+        List<UserDTO> userDTOS = userService.findAllByManager_IdIn(Collections.singletonList(id)); // ManagerId si ? olanların lıstesı
+
+        Iterator iterator = userDTOS.iterator();
+
 
         if(userDTOS.isEmpty()){
+            throw new BadRequestAlertException("Bu id'ye sahip manager bulunamadı", ENTITY_NAME, "testt");
+        }
 
-            throw new BadRequestAlertException("Bu Id'ye sahip manager bulunamadı", ENTITY_NAME, "testt");
+        while(iterator.hasNext()) {
+
+
+            for (int i = 0; i < userDTOS.size(); i++) {
+                user_customer_id.add(userDTOS.get(i).getId());
+                // System.out.println("Array : " + user_customer_id);
+            }
+
+            customerDTOS = customerService.findAllByOwner_IdIn(user_customer_id);
+
+
+            for (int i = 0; i < customerDTOS.size(); i++) {
+                customer_name.add(customerDTOS.get(i).getCustomer_name());
+            }
+
+            for (int i = 0; i < user_customer_id.size(); i++) {
+                getCustomers(user_customer_id.get(i));
+            }
 
         }
 
-      //  List<CustomerDTO> customerDTOS = customerService.findAllByUsers_IdIn(ids);
-
-        System.out.println("testsss : " + userDTOS.size());
-
-
-        return userDTOS;
+        Set<String> set_musteri = new HashSet<String>(customer_name);
+        return set_musteri;
     }
 
 
