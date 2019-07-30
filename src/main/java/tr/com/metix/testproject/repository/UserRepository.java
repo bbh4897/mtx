@@ -52,4 +52,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //////
 
     List<User> findUsersByManager_IdIn(List<Long> ids);
+
+//    User findById(Long id);
 }

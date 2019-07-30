@@ -2,6 +2,7 @@ package tr.com.metix.testproject.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Entity
 public class Customer implements Serializable {

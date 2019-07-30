@@ -3,15 +3,19 @@ package tr.com.metix.testproject.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.com.metix.testproject.config.Constants;
+import tr.com.metix.testproject.domain.Authority;
+import tr.com.metix.testproject.domain.Customer;
+import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.CustomerRepository;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 import tr.com.metix.testproject.service.mapper.CustomerMapper;
+import tr.com.metix.testproject.service.util.RandomUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,8 +56,26 @@ public class CustomerService {
 
     }
 
-    public CustomerDTO save(CustomerDTO customerDTO) {
-        return countryRepository.save(country);
+    public Customer createCustomer(CustomerDTO customerDTO) {
+
+        Customer customer = new Customer();
+
+        customer.setName(customerDTO.getName());
+
+        if (customerDTO.getOwnerId() != null) {
+
+            Optional<User> user = userRepository.findById(customerDTO.getOwnerId());
+
+            customer.setOwner(user);
+
+
+        }
+
+        
+
+
+        customerRepository.save(customer);
+        return customer;
     }
 
 
