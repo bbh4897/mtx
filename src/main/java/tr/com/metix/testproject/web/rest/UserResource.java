@@ -215,7 +215,7 @@ public class UserResource {
 
         System.out.println("IDSS : " + id);
 
-        List<UserDTO> userDTOS = userService.findAllByManager_IdIn(Collections.singletonList(id)); // ManagerId si ? olanların lıstesı
+        List<UserDTO> userDTOS = userService.findAllByManager_IdIn(Collections.singletonList((id))); // ManagerId si ? olanların lıstesı
 
         Iterator iterator = userDTOS.iterator();
 
@@ -224,7 +224,7 @@ public class UserResource {
             throw new BadRequestAlertException("Bu id'ye sahip manager bulunamadı", ENTITY_NAME, "testt");
         }
 
-        while(iterator.hasNext()) {
+
 
 
             for (int i = 0; i < userDTOS.size(); i++) {
@@ -239,11 +239,15 @@ public class UserResource {
                 customer_name.add(customerDTOS.get(i).getCustomer_name());
             }
 
-            for (int i = 0; i < user_customer_id.size(); i++) {
-                getCustomers(user_customer_id.get(i));
+            for (int i = 0; i < user_customer_id.size(); i++) {  // 5 -> {6,7}
+
+                    getCustomers(user_customer_id.get(i));
+
             }
 
-        }
+
+
+
 
         Set<String> set_musteri = new HashSet<String>(customer_name);
         return set_musteri;
