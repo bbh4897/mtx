@@ -5,6 +5,7 @@ import tr.com.metix.testproject.domain.Authority;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
+import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.MailService;
 import tr.com.metix.testproject.service.UserService;
 import tr.com.metix.testproject.service.dto.UserDTO;
@@ -73,6 +74,9 @@ public class UserResourceIT {
     private UserService userService;
 
     @Autowired
+    private CustomerService customerService;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -94,11 +98,12 @@ public class UserResourceIT {
 
     private User user;
 
+
     @BeforeEach
     public void setup() {
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
         cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
-        UserResource userResource = new UserResource(userService, userRepository, mailService);
+        UserResource userResource = new UserResource(userService, customerService, userRepository, mailService);
 
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)

@@ -8,6 +8,7 @@ import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
 import tr.com.metix.testproject.security.SecurityUtils;
 import tr.com.metix.testproject.service.dto.UserDTO;
+import tr.com.metix.testproject.service.mapper.UserMapper;
 import tr.com.metix.testproject.service.util.RandomUtil;
 import tr.com.metix.testproject.web.rest.errors.*;
 
@@ -43,11 +44,14 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -293,4 +297,25 @@ public class UserService {
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
     }
+
+    //////////////////////////////////////////////
+
+    public List<UserDTO> getHierarchicalUserIds(List<Long> ids) {
+        List<UserDTO> childs = userRepository.findUsersByManager_IdIn(ids).stream().map(userMapper::userToUserDTO)
+            .collect(Collectors.toCollection(LinkedList::new));
+
+        if(!childs.isEmpty()) {
+            List<Long> ids2 = new ArrayList<>();
+
+            for(UserDTO u : childs) ids2.add(u.getId());
+
+            List<UserDTO> child2 = getHierarchicalUserIds(ids2);
+
+            childs.addAll(child2);
+        }
+
+        return childs;
+    }
+
+
 }

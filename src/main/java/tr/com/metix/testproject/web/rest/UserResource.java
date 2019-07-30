@@ -1,11 +1,14 @@
 package tr.com.metix.testproject.web.rest;
 
 import tr.com.metix.testproject.config.Constants;
+import tr.com.metix.testproject.domain.Customer;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
+import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.MailService;
 import tr.com.metix.testproject.service.UserService;
+import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 import tr.com.metix.testproject.web.rest.errors.EmailAlreadyUsedException;
@@ -67,14 +70,16 @@ public class UserResource {
     private String applicationName;
 
     private final UserService userService;
+    private final CustomerService customerService;
 
     private final UserRepository userRepository;
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService,CustomerService customerService, UserRepository userRepository, MailService mailService) {
 
         this.userService = userService;
+        this.customerService = customerService;
         this.userRepository = userRepository;
         this.mailService = mailService;
     }
@@ -190,4 +195,19 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }
+
+
+
+    ////////////////////////////////////////
+
+    @GetMapping("/customers")
+    public ResponseEntity<List<CustomerDTO>> getAllUsers(@RequestParam Long userId) {
+
+        return new ResponseEntity<List<CustomerDTO>>(customerService.findCustomersByHierarchy(userId), null, HttpStatus.OK);
+}
+
+
+
+
+
 }
