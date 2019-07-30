@@ -52,6 +52,10 @@ public class CustomerService {
 
     }
 
+    public CustomerDTO save(CustomerDTO customerDTO) {
+        return countryRepository.save(country);
+    }
+
 
 
 }
