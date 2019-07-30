@@ -32,16 +32,18 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    public List<CustomerDTO> findCustomersByHierarchy(Long userId) {
+    public List<CustomerDTO> findCustomersByHierarchy(Long userId) { // [  (5)  ]
         List<Long> ids = new ArrayList<Long>();
-        ids.add(userId);
+        ids.add(userId); // [ (5)  ]
 
-        List<UserDTO> h = userService.getHierarchicalUserIds(ids);
+        List<UserDTO> h = userService.getHierarchicalUserIds(ids); // ownerId'si {5}  olanların listesi [ {6,7} ] **** {6,7} -> {8,9,10,11}
 
-        for(UserDTO u : h) ids.add(u.getId());
+        for(UserDTO u : h){
+            ids.add(u.getId()); // [ {5,6,7,8,9,10,11} ]
+        }
 
         return customerRepository.findAllByOwner_IdIn(ids).stream().map(customerMapper::customerToCostumerDTO)
-            .collect(Collectors.toCollection(LinkedList::new));
+            .collect(Collectors.toCollection(LinkedList::new)); //
     }
 
 

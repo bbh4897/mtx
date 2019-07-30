@@ -300,21 +300,22 @@ public class UserService {
 
     //////////////////////////////////////////////
 
-    public List<UserDTO> getHierarchicalUserIds(List<Long> ids) {
+    public List<UserDTO> getHierarchicalUserIds(List<Long> ids) { // [ (5) ] --------- {6,7}  ------- x
         List<UserDTO> childs = userRepository.findUsersByManager_IdIn(ids).stream().map(userMapper::userToUserDTO)
-            .collect(Collectors.toCollection(LinkedList::new));
+            .collect(Collectors.toCollection(LinkedList::new)); // managerId'si 5 olanların listesi *** {6,7} ----- {8,9,10,11} ------- x
 
-        if(!childs.isEmpty()) {
+        if(!childs.isEmpty()) { // managerId'si ? olan varsa *** {6,7} ----- {8,9,10,11} ------- x
             List<Long> ids2 = new ArrayList<>();
 
-            for(UserDTO u : childs) ids2.add(u.getId());
+            for(UserDTO u : childs) {
+                ids2.add(u.getId()); // ownerId'si ? olanların id'si eklendi [ {6,7} ] ----- {8,9,10,11} ------- x
+            }
+            List<UserDTO> child2 = getHierarchicalUserIds(ids2); // [ (6,7) ] ----- {8,9,10,11} ------- x
 
-            List<UserDTO> child2 = getHierarchicalUserIds(ids2);
-
-            childs.addAll(child2);
+            childs.addAll(child2); // [  {5} << {6,7,8,9,10,11}  ]
         }
 
-        return childs;
+        return childs; // [  {5,6,7,8,9,10,11 }  ]
     }
 
 
