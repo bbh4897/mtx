@@ -44,6 +44,14 @@ public class CustomerService {
             .collect(Collectors.toCollection(LinkedList::new)); //
     }
 
+    /////////////
+
+    public void deleteCustomer(Long id) {
+
+        customerRepository.deleteByOwner_Id(id);
+
+    }
+
 
 
 }
