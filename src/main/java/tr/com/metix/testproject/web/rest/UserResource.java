@@ -69,6 +69,7 @@ public class UserResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+
     private final UserService userService;
     private final CustomerService customerService;
 
