@@ -84,6 +84,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    @ManyToOne
+    private User manager;
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
+    }
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
