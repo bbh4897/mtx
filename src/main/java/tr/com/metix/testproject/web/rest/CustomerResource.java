@@ -53,21 +53,19 @@ public class CustomerResource {
 
 
 
-    @PostMapping("/customers")
-    public Customer createUser(@Valid @RequestBody CustomerDTO customerDTO) {
-        Customer newCustomer;
+    @PostMapping("/customercreate")
+    public Customer createCustomer(@Valid @RequestBody CustomerDTO customerDTO){
+
 
         if (customerDTO.getId() != null) {
-            throw new BadRequestAlertException("Bu id'ye sahip bir müşteri zaten bulunmakta", null, "test");
-
-        } else {
-            newCustomer  = customerService.createCustomer(customerDTO);
+            throw new BadRequestAlertException("Bu müşteri zaten mevcut", null, "test");
 
         }
-
-        return newCustomer;
+            Customer newCustomer = customerService.createCustomer(customerDTO);
+            return newCustomer;
     }
-
-
-
 }
+
+
+
+
