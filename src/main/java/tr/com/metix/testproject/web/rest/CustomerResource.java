@@ -11,6 +11,7 @@ import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -59,9 +60,19 @@ public class CustomerResource {
     ///// update test
 
     @GetMapping("/customersupdate")
-    public List<UserDTO> getAllUsersUpdate(@RequestParam Long customerId) {
+    public List<Long> getAllUsersUpdate(@RequestParam Long customerId) {
 
-        return  customerService.findCustomersByHierarchy2(customerId);
+
+        List<UserDTO> userDTOS = customerService.findCustomersByHierarchy2(customerId);
+
+        List<Long> userId = new ArrayList<>();
+
+        for(int i=0; i<userDTOS.size();i++){
+            userId.add(userDTOS.get(i).getId());
+        }
+
+
+        return userId;
     }
 
 

@@ -89,7 +89,7 @@ public class CustomerService {
 
         List<UserDTO> h = userService.getHierarchicalManagerIds(ids); // // userId'si 8 olan satır
 
-        System.out.println("hhhhh : " + h.get(0).getManagerId());
+//        System.out.println("hhhhh : " + h.get(0).getManagerId());
 
 
 
