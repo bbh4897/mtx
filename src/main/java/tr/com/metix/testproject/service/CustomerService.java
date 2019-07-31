@@ -34,7 +34,7 @@ public class CustomerService {
         this.userMapper = userMapper;
     }
 
-    public List<CustomerDTO> findCustomersByHierarchy(Long userId) { // [  (5)  ]
+    public List<CustomerDTO> findCustomersByHierarchy(Long userId) { // [  (5)  ]     OWNERID
         List<Long> ids = new ArrayList<Long>();
         ids.add(userId); // [ (5)  ]
 
@@ -56,6 +56,7 @@ public class CustomerService {
 
     }
 
+    // create customer
     public Customer createCustomer(CustomerDTO customerDTO) {
 
         Customer customer = new Customer();
@@ -70,6 +71,30 @@ public class CustomerService {
         return customer;
     }
 
+
+    ////// update
+    List<Long> ids = new ArrayList<>();
+
+    public List<UserDTO> findCustomersByHierarchy2(Long customerId) { // [  (1)  ]
+
+
+
+        Optional<CustomerDTO> c = customerRepository.findById(customerId).map(customerMapper::customerToCostumerDTO); // id'si 1 olan satır
+
+        System.out.println("xxxxxxxxxxx : " + c.get().getId());
+        ids.add(c.get().getOwnerId()); // 8
+
+
+        System.out.println("ownerId : " + c.get().getOwnerId());
+
+        List<UserDTO> h = userService.getHierarchicalManagerIds(ids); // // userId'si 8 olan satır
+
+        System.out.println("hhhhh : " + h.get(0).getManagerId());
+
+
+
+        return h;
+    }
 
 
 

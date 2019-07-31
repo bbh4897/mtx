@@ -4,10 +4,13 @@ import tr.com.metix.testproject.config.Constants;
 import tr.com.metix.testproject.domain.Authority;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.AuthorityRepository;
+import tr.com.metix.testproject.repository.CustomerRepository;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
 import tr.com.metix.testproject.security.SecurityUtils;
+import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
+import tr.com.metix.testproject.service.mapper.CustomerMapper;
 import tr.com.metix.testproject.service.mapper.UserMapper;
 import tr.com.metix.testproject.service.util.RandomUtil;
 import tr.com.metix.testproject.web.rest.errors.*;
@@ -45,13 +48,18 @@ public class UserService {
     private final CacheManager cacheManager;
 
     private final UserMapper userMapper;
+    private final CustomerMapper customerMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, UserMapper userMapper) {
+    private final CustomerRepository customerRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, UserMapper userMapper, CustomerMapper customerMapper, CustomerRepository customerRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         this.userMapper = userMapper;
+        this.customerMapper = customerMapper;
+        this.customerRepository = customerRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -318,5 +326,40 @@ public class UserService {
 
         return childs; // [  {5,6,7,8,9,10,11 }  ]
     }
+
+
+    //////////////////// UPDATE
+
+    public List<UserDTO> getHierarchicalManagerIds(List<Long> id) { // 8  --- 6
+
+
+        System.out.println("iddddddddd : " + id);
+
+            List<UserDTO> parents = userRepository.findByIdIn(id).stream().map(userMapper::userToUserDTO)
+                .collect(Collectors.toCollection(LinkedList::new)); //
+
+
+        System.out.println("parents : " + parents);
+
+            List<Long> ids2 = new ArrayList<>(); // managerId'leri tutuyor
+
+        if(!parents.isEmpty()) {
+            List<Long> ids3 = new ArrayList<>();
+
+            for(UserDTO u : parents) {
+                ids2.add(u.getManagerId()); // 6 --- 5
+            }
+            List<UserDTO> parent2 = getHierarchicalManagerIds(ids2); // 6 --- 5
+
+            parents.addAll(parent2); //
+        }
+
+
+
+
+
+        return parents; // 8 -- 6---5
+    }
+
 
 }
