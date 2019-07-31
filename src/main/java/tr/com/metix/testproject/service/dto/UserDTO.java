@@ -55,13 +55,7 @@ public class UserDTO {
 
     private Long managerId;
 
-    public Long getManagerId() {
-        return managerId;
-    }
 
-    public void setManagerId(Long managerId) {
-        this.managerId = managerId;
-    }
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -83,6 +77,9 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+        if(user.getManager()!=null) {
+            this.managerId = user.getManager().getId();
+        }
     }
 
     public Long getId() {
@@ -187,6 +184,14 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
     }
 
     @Override

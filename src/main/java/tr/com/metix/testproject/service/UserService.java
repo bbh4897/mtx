@@ -339,7 +339,7 @@ public class UserService {
                 .collect(Collectors.toCollection(LinkedList::new)); //
 
 
-        System.out.println("parents : " + parents);
+        System.out.println("PARENTS : " + parents.get(0).getManagerId()); // 6
 
             List<Long> ids2 = new ArrayList<>(); // managerId'leri tutuyor
 
