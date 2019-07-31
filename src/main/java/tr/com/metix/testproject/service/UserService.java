@@ -338,25 +338,23 @@ public class UserService {
             List<UserDTO> parents = userRepository.findByIdIn(id).stream().map(userMapper::userToUserDTO)
                 .collect(Collectors.toCollection(LinkedList::new)); //
 
-
-        System.out.println("PARENTS : " + parents.get(0).getManagerId()); // 6
-
+    for(int i=0; i<parents.size();i++) {
+        System.out.println("PARENTS : " + parents.get(i).getManagerId()); // 6
+    }
             List<Long> ids2 = new ArrayList<>(); // managerId'leri tutuyor
 
         if(!parents.isEmpty()) {
-            List<Long> ids3 = new ArrayList<>();
 
             for(UserDTO u : parents) {
-                ids2.add(u.getManagerId()); // 6 --- 5
+                if(u.getManagerId()!=null) {
+                    ids2.add(u.getManagerId()); // 6 --- 5
+                }
+
             }
-            List<UserDTO> parent2 = getHierarchicalManagerIds(ids2); // 6 --- 5
+            List<UserDTO> parent2 = getHierarchicalManagerIds(ids2); // 7,6,5
 
             parents.addAll(parent2); //
         }
-
-
-
-
 
         return parents; // 8 -- 6---5
     }
