@@ -8,7 +8,6 @@ import tr.com.metix.testproject.repository.CustomerRepository;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
 import tr.com.metix.testproject.security.SecurityUtils;
-import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 import tr.com.metix.testproject.service.mapper.CustomerMapper;
 import tr.com.metix.testproject.service.mapper.UserMapper;
@@ -359,5 +358,23 @@ public class UserService {
         return parents; // 8 -- 6---5
     }
 
+    private List<Long> asd(Long userId) {
+        List<Long> userIds = new ArrayList<Long>();
 
+        userIds.add(userId);
+
+        Optional<User> u = userRepository.findById(userId);
+
+        if(!u.isPresent()) {
+            return userIds;
+        } else {
+            if(u.get().getManager() != null) {
+                asd(u.get().getManager().getId());
+            } else {
+                return userIds;
+            }
+        }
+
+        return userIds;
+    }
 }
