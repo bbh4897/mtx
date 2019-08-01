@@ -79,19 +79,15 @@ public class CustomerResource {
         }
 
         System.out.println("USERID : " + userId);
-        List<Long> uyusan = new ArrayList<>();
 
-        for(int i=0; i<userId.size();i++){
-            if(u.get().getId() == userId.get(i)){
-                uyusan.add(userId.get(i));
-            }
-            else{
-                System.out.println("Bu müşteriyi siz düzenleyemezsiniz");
-            }
+
+        if(!userId.contains(u.get().getId())){
+            throw new BadRequestAlertException("Bu müşteriyi düzenleyemezsiniz", null, "test");
         }
 
 
-        return uyusan;
+
+        return userId;
     }
 
 
