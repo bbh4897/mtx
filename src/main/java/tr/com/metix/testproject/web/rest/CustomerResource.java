@@ -83,30 +83,8 @@ public class CustomerResource {
 
     ///// update hiyerarşi
 
-    @GetMapping("/customersupdate")
-    public List<Long> getAllUsersUpdate(@RequestParam Long customerId) { // 4
 
 
-        Optional<CustomerDTO> customerDTO = customerService.findById(customerId); //
-
-      //  System.out.println("CURRENT USER : " + u.get().getId());
-
-        List<Long> userDTOS = customerService.findCustomersByHierarchy2(customerId);
-
-        List<Long> userId = new ArrayList<>();
-
-        for(int i=0; i<userDTOS.size();i++){
-            userId.add(userDTOS.get(i));
-        }
-
-        System.out.println("USERID : " + userId);
-
-//
-
-
-
-        return userId;
-    }
 
     ///// update işlem
 
@@ -114,7 +92,8 @@ public class CustomerResource {
     public Optional<CustomerDTO> updateCustomer2(@Valid @RequestBody CustomerDTO customerDTO) {
 
         Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
-        List<Long> userId = getAllUsersUpdate(customerDTO.getId());
+
+        List<Long> userId = customerService.getAllUsersUpdate(customerDTO.getId());
 //        Optional<CustomerDTO> customerDTO1 = customerService.findById(customerDTO.getId());
         if (!userId.contains(u.get().getId())) {
             throw new BadRequestAlertException("Bu müşteriyi düzenleyemezsiniz", null, "test");

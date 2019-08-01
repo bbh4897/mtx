@@ -4,6 +4,7 @@ package tr.com.metix.testproject.service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import tr.com.metix.testproject.domain.Customer;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.CustomerRepository;
@@ -122,6 +123,27 @@ public class CustomerService {
         return customerDTO;
 
 
+    }
+
+    public List<Long> getAllUsersUpdate(@RequestParam Long customerId) { // 4
+
+
+        Optional<CustomerDTO> customerDTO = findById(customerId); //
+
+        //  System.out.println("CURRENT USER : " + u.get().getId());
+
+        List<Long> userDTOS = findCustomersByHierarchy2(customerId);
+
+        List<Long> userId = new ArrayList<>();
+
+        for(int i=0; i<userDTOS.size();i++){
+            userId.add(userDTOS.get(i));
+        }
+
+        System.out.println("USERID : " + userId);
+
+
+        return userId;
     }
 
 
