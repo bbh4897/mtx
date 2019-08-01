@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metix.testproject.domain.Customer;
+import tr.com.metix.testproject.domain.User;
+import tr.com.metix.testproject.security.SecurityUtils;
 import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.UserService;
 import tr.com.metix.testproject.service.dto.CustomerDTO;
@@ -13,6 +15,7 @@ import tr.com.metix.testproject.service.dto.UserDTO;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -61,6 +64,9 @@ public class CustomerResource {
 
     @GetMapping("/customersupdate")
     public List<Long> getAllUsersUpdate(@RequestParam Long customerId) {
+
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+
 
 
         List<UserDTO> userDTOS = customerService.findCustomersByHierarchy2(customerId);

@@ -1,6 +1,8 @@
 package tr.com.metix.testproject.service;
 
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.com.metix.testproject.domain.Authority;
@@ -44,7 +46,8 @@ public class CustomerService {
             ids.add(u.getId()); // [ {5,6,7,8,9,10,11} ]
         }
 
-        return customerRepository.findAllByOwner_IdIn(ids).stream().map(customerMapper::customerToCostumerDTO)
+        customerRepository.findAllByOwner_IdIn(ids, PageRequest.of(0, 50, Sort.by("name").ascending().and(Sort.by("surname").descending())));
+        return customerRepository.findAllByOwner_IdIn(ids, PageRequest.of(0, 50)).stream().map(customerMapper::customerToCostumerDTO)
             .collect(Collectors.toCollection(LinkedList::new)); //
     }
 

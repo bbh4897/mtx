@@ -361,19 +361,19 @@ public class UserService {
     private List<Long> asd(Long userId) {
         List<Long> userIds = new ArrayList<Long>();
 
-        userIds.add(userId);
+
 
         Optional<User> u = userRepository.findById(userId);
 
-        if(!u.isPresent()) {
-            return userIds;
-        } else {
+        if(u.isPresent()){
+            userIds.add(userId);
             if(u.get().getManager() != null) {
-                asd(u.get().getManager().getId());
-            } else {
-                return userIds;
+
+                userIds.addAll(asd(u.get().getManager().getId()));
             }
+
         }
+
 
         return userIds;
     }
