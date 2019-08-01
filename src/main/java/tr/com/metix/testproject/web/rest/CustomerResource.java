@@ -81,14 +81,15 @@ public class CustomerResource {
         return new ResponseEntity<List<CustomerDTO>>(customerService.findCustomersByHierarchy(userId), null, HttpStatus.OK);
     }
 
-    ///// update test
+    ///// update hiyerarşi
 
     @GetMapping("/customersupdate")
     public List<Long> getAllUsersUpdate(@RequestParam Long customerId) { // 4
 
-        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
 
-        System.out.println("CURRENT USER : " + u.get().getId());
+        Optional<CustomerDTO> customerDTO = customerService.findById(customerId); //
+
+      //  System.out.println("CURRENT USER : " + u.get().getId());
 
         List<Long> userDTOS = customerService.findCustomersByHierarchy2(customerId);
 
@@ -100,14 +101,34 @@ public class CustomerResource {
 
         System.out.println("USERID : " + userId);
 
-
-        if(!userId.contains(u.get().getId())){
-            throw new BadRequestAlertException("Bu müşteriyi düzenleyemezsiniz", null, "test");
-        }
+//
 
 
 
         return userId;
+    }
+
+    ///// update işlem
+
+    @PutMapping("/customer")
+    public Optional<CustomerDTO> updateCustomer2(@Valid @RequestBody CustomerDTO customerDTO) {
+
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+        List<Long> userId = getAllUsersUpdate(customerDTO.getId());
+//        Optional<CustomerDTO> customerDTO1 = customerService.findById(customerDTO.getId());
+        if (!userId.contains(u.get().getId())) {
+            throw new BadRequestAlertException("Bu müşteriyi düzenleyemezsiniz", null, "test");
+        }
+
+
+        Optional<CustomerDTO> updatedCustomer = customerService.updateCustomer(customerDTO);
+
+
+
+
+
+        return updatedCustomer;
+
     }
 
 

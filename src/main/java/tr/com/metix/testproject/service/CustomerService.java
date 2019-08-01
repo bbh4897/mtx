@@ -2,10 +2,8 @@ package tr.com.metix.testproject.service;
 
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tr.com.metix.testproject.domain.Authority;
 import tr.com.metix.testproject.domain.Customer;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.CustomerRepository;
@@ -97,6 +95,33 @@ public class CustomerService {
 
 
         return h; // 7 -- 6 -- 5
+    }
+
+
+    public Optional<CustomerDTO> updateCustomer(CustomerDTO customerDTO) {
+
+        return Optional.of(customerRepository
+            .findById(customerDTO.getId()))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(customer -> {
+
+                customer.setName(customerDTO.getName());
+
+
+                return customer;
+            })
+            .map(customerMapper::customerToCostumerDTO);
+    }
+
+
+    public Optional<CustomerDTO> findById(Long id){
+
+        Optional<CustomerDTO> customerDTO = customerRepository.findById(id).map(customerMapper::customerToCostumerDTO);
+
+        return customerDTO;
+
+
     }
 
 
