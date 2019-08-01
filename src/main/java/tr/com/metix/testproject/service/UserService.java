@@ -134,9 +134,9 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser){
+    private boolean removeNonActivatedUser(User existingUser) {
         if (existingUser.getActivated()) {
-             return false;
+            return false;
         }
         userRepository.delete(existingUser);
         userRepository.flush();
@@ -293,6 +293,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     public List<String> getAuthorities() {
@@ -312,10 +313,10 @@ public class UserService {
         List<UserDTO> childs = userRepository.findUsersByManager_IdIn(ids).stream().map(userMapper::userToUserDTO)
             .collect(Collectors.toCollection(LinkedList::new)); // managerId'si 5 olanların listesi *** {6,7} ----- {8,9,10,11} ------- x
 
-        if(!childs.isEmpty()) { // managerId'si ? olan varsa *** {6,7} ----- {8,9,10,11} ------- x
+        if (!childs.isEmpty()) { // managerId'si ? olan varsa *** {6,7} ----- {8,9,10,11} ------- x
             List<Long> ids2 = new ArrayList<>();
 
-            for(UserDTO u : childs) {
+            for (UserDTO u : childs) {
                 ids2.add(u.getId()); // ownerId'si ? olanların id'si eklendi [ {6,7} ] ----- {8,9,10,11} ------- x
             }
             List<UserDTO> child2 = getHierarchicalUserIds(ids2); // [ (6,7) ] ----- {8,9,10,11} ------- x
@@ -329,52 +330,52 @@ public class UserService {
 
     //////////////////// UPDATE
 
-    public List<UserDTO> getHierarchicalManagerIds(List<Long> id) { // 8  --- 6
+//    public List<UserDTO> getHierarchicalManagerIds(List<Long> id) { // 8  --- 6
+//
+//
+//        System.out.println("iddddddddd : " + id);
+//
+//        List<UserDTO> parents = userRepository.findByIdIn(id).stream().map(userMapper::userToUserDTO)
+//            .collect(Collectors.toCollection(LinkedList::new)); //
+//
+//        for (int i = 0; i < parents.size(); i++) {
+//            System.out.println("PARENTS : " + parents.get(i).getManagerId()); // 6
+//        }
+//        List<Long> ids2 = new ArrayList<>(); // managerId'leri tutuyor
+//
+//        if (!parents.isEmpty()) {
+//
+//            for (UserDTO u : parents) {
+//                if (u.getManagerId() != null) {
+//                    ids2.add(u.getManagerId()); // 6 --- 5
+//                }
+//
+//            }
+//            List<UserDTO> parent2 = getHierarchicalManagerIds(ids2); // 7,6,5
+//
+//            parents.addAll(parent2); //
+//        }
+//
+//        return parents; // 8 -- 6---5
+//    }
 
+    public List<Long> asd(Long userId) { // 7 -- 6
 
-        System.out.println("iddddddddd : " + id);
-
-            List<UserDTO> parents = userRepository.findByIdIn(id).stream().map(userMapper::userToUserDTO)
-                .collect(Collectors.toCollection(LinkedList::new)); //
-
-    for(int i=0; i<parents.size();i++) {
-        System.out.println("PARENTS : " + parents.get(i).getManagerId()); // 6
-    }
-            List<Long> ids2 = new ArrayList<>(); // managerId'leri tutuyor
-
-        if(!parents.isEmpty()) {
-
-            for(UserDTO u : parents) {
-                if(u.getManagerId()!=null) {
-                    ids2.add(u.getManagerId()); // 6 --- 5
-                }
-
-            }
-            List<UserDTO> parent2 = getHierarchicalManagerIds(ids2); // 7,6,5
-
-            parents.addAll(parent2); //
-        }
-
-        return parents; // 8 -- 6---5
-    }
-
-    private List<Long> asd(Long userId) {
         List<Long> userIds = new ArrayList<Long>();
 
 
+        Optional<User> u = userRepository.findById(userId); // userId'si 7 olan satır // 6 olan satır
 
-        Optional<User> u = userRepository.findById(userId);
+        if (u.isPresent()) {
+            userIds.add(userId); // 7 -- 6
+            if (u.get().getManager() != null) { // 6 -- 5
 
-        if(u.isPresent()){
-            userIds.add(userId);
-            if(u.get().getManager() != null) {
-
-                userIds.addAll(asd(u.get().getManager().getId()));
+                userIds.addAll(asd(u.get().getManager().getId())); // 7 ---- 6
             }
 
         }
 
 
-        return userIds;
+        return userIds; /// 7 ---- 6 ---- 5
     }
 }

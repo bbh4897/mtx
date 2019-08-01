@@ -46,7 +46,7 @@ public class CustomerService {
             ids.add(u.getId()); // [ {5,6,7,8,9,10,11} ]
         }
 
-        customerRepository.findAllByOwner_IdIn(ids, PageRequest.of(0, 50, Sort.by("name").ascending().and(Sort.by("surname").descending())));
+//        customerRepository.findAllByOwner_IdIn(ids, PageRequest.of(0, 50, Sort.by("name").ascending().and(Sort.by("surname").descending())));
         return customerRepository.findAllByOwner_IdIn(ids, PageRequest.of(0, 50)).stream().map(customerMapper::customerToCostumerDTO)
             .collect(Collectors.toCollection(LinkedList::new)); //
     }
@@ -76,27 +76,27 @@ public class CustomerService {
 
 
     ////// update
-    List<Long> ids = new ArrayList<>();
+//    List<Long> ids = new ArrayList<>();
 
-    public List<UserDTO> findCustomersByHierarchy2(Long customerId) { // [  (1)  ]
-
-
-
-        Optional<CustomerDTO> c = customerRepository.findById(customerId).map(customerMapper::customerToCostumerDTO); // id'si 1 olan satır
-
-        System.out.println("xxxxxxxxxxx : " + c.get().getId());
-        ids.add(c.get().getOwnerId()); // 8
+    public List<Long> findCustomersByHierarchy2(Long customerId) { // [  (4)  ]
 
 
-        System.out.println("ownerId : " + c.get().getOwnerId());
 
-        List<UserDTO> h = userService.getHierarchicalManagerIds(ids); // // userId'si 8 olan satır
+        Optional<CustomerDTO> c = customerRepository.findById(customerId).map(customerMapper::customerToCostumerDTO); // id'si 4 olan satır
+
+//        System.out.println("xxxxxxxxxxx : " + c.get().getId());
+//        ids.add(c.get().getOwnerId()); // 8
+//
+
+        System.out.println("ownerId : " + c.get().getOwnerId()); // 7
+
+        List<Long> h = userService.asd(c.get().getOwnerId()); // 7 -- 6 -- 5
 
 //        System.out.println("hhhhh : " + h.get(0).getManagerId());
 
 
 
-        return h;
+        return h; // 7 -- 6 -- 5
     }
 
 

@@ -63,18 +63,18 @@ public class CustomerResource {
     ///// update test
 
     @GetMapping("/customersupdate")
-    public List<Long> getAllUsersUpdate(@RequestParam Long customerId) {
+    public List<Long> getAllUsersUpdate(@RequestParam Long customerId) { // 4
 
-        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+//        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
 
 
 
-        List<UserDTO> userDTOS = customerService.findCustomersByHierarchy2(customerId);
+        List<Long> userDTOS = customerService.findCustomersByHierarchy2(customerId);
 
         List<Long> userId = new ArrayList<>();
 
         for(int i=0; i<userDTOS.size();i++){
-            userId.add(userDTOS.get(i).getId());
+            userId.add(userDTOS.get(i));
         }
 
 
