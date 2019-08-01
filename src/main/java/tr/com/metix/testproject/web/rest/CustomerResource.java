@@ -11,6 +11,7 @@ import tr.com.metix.testproject.service.CustomerService;
 import tr.com.metix.testproject.service.UserService;
 import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
+import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -65,9 +66,9 @@ public class CustomerResource {
     @GetMapping("/customersupdate")
     public List<Long> getAllUsersUpdate(@RequestParam Long customerId) { // 4
 
-//        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+       Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
 
-
+        System.out.println("CURRENT USER : " + u.get().getId());
 
         List<Long> userDTOS = customerService.findCustomersByHierarchy2(customerId);
 
@@ -77,8 +78,20 @@ public class CustomerResource {
             userId.add(userDTOS.get(i));
         }
 
+        System.out.println("USERID : " + userId);
+        List<Long> uyusan = new ArrayList<>();
 
-        return userId;
+        for(int i=0; i<userId.size();i++){
+            if(u.get().getId() == userId.get(i)){
+                uyusan.add(userId.get(i));
+            }
+            else{
+                System.out.println("Bu müşteriyi siz düzenleyemezsiniz");
+            }
+        }
+
+
+        return uyusan;
     }
 
 
