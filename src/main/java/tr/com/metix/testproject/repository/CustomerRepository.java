@@ -17,7 +17,7 @@ public interface CustomerRepository extends JpaRepository<Customer,Long>, JpaSpe
 
    // void deleteById(Long id); /// customerId'sı verılen kısıyı sılme
 
-    void deleteByOwner_Id(Long id); // ownerId2Sı verılen kısının musterılerını sılme
+    void deleteById(Long id); // ownerId2Sı verılen kısının musterılerını sılme
 
 
     Optional<Customer> findById(Long id);
