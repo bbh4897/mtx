@@ -10,6 +10,7 @@ import tr.com.metix.testproject.domain.Customer;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.CustomerRepository;
 import tr.com.metix.testproject.repository.UserRepository;
+import tr.com.metix.testproject.security.SecurityUtils;
 import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 import tr.com.metix.testproject.service.mapper.CustomerMapper;
@@ -62,12 +63,11 @@ public class CustomerService {
     // create customer
     public Customer createCustomer(CustomerDTO customerDTO) {
 
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+
         Customer customer = new Customer();
-
         customer.setName(customerDTO.getName());
-
-        Optional<User> u = userRepository.findById(customerDTO.getOwnerId());
-
+//        Optional<User> u = userRepository.findById(customerDTO.getOwnerId()); // ownerId el ile gırıldıgı zaman
         customer.setOwner(u.get());
 
         customerRepository.save(customer);
