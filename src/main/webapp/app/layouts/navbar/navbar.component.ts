@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
 
     this.profileService.getProfileInfo().then(profileInfo => {
       this.inProduction = profileInfo.inProduction;
-      this.swaggerEnabled = profileInfo.swaggerEnabled;
+      this.swaggerEnabled = true;
     });
   }
 

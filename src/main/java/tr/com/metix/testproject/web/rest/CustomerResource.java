@@ -91,19 +91,10 @@ public class CustomerResource {
     @PutMapping("/customer")
     public Optional<CustomerDTO> updateCustomer2(@Valid @RequestBody CustomerDTO customerDTO) {
 
-        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
 
-        List<Long> userId = customerService.getAllUsersUpdate(customerDTO.getId());
-//        Optional<CustomerDTO> customerDTO1 = customerService.findById(customerDTO.getId());
-        if (!userId.contains(u.get().getId())) {
-            throw new BadRequestAlertException("Bu müşteriyi düzenleyemezsiniz", null, "test");
-        }
 
 
         Optional<CustomerDTO> updatedCustomer = customerService.updateCustomer(customerDTO);
-
-
-
 
 
         return updatedCustomer;

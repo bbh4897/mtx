@@ -14,6 +14,7 @@ import tr.com.metix.testproject.service.dto.CustomerDTO;
 import tr.com.metix.testproject.service.dto.UserDTO;
 import tr.com.metix.testproject.service.mapper.CustomerMapper;
 import tr.com.metix.testproject.service.mapper.UserMapper;
+import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,6 +102,14 @@ public class CustomerService {
 
     public Optional<CustomerDTO> updateCustomer(CustomerDTO customerDTO) {
 
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+
+        List<Long> userId = getAllUsersUpdate(customerDTO.getId()); // 5,6,7
+//        Optional<CustomerDTO> customerDTO1 = customerService.findById(customerDTO.getId());
+        if (!userId.contains(u.get().getId())) {
+            throw new BadRequestAlertException("Bu müşteriyi düzenleyemezsiniz", null, "test");
+        }
+
         return Optional.of(customerRepository
             .findById(customerDTO.getId()))
             .filter(Optional::isPresent)
@@ -108,8 +117,6 @@ public class CustomerService {
             .map(customer -> {
 
                 customer.setName(customerDTO.getName());
-
-
                 return customer;
             })
             .map(customerMapper::customerToCostumerDTO);
