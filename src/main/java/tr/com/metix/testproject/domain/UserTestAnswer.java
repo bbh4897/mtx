@@ -1,5 +1,7 @@
 package tr.com.metix.testproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,7 +13,7 @@ public class UserTestAnswer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "usertestanswer_id")
+    //@Column(name = "usertestanswer_id")
     private Long id;
 
 
@@ -22,11 +24,9 @@ public class UserTestAnswer implements Serializable {
     private Set<UserTest> usertests = new HashSet<>();
 
 
-    @ManyToMany
-    @JoinTable(name = "usertestanswer_answer",
-        joinColumns = @JoinColumn(name = "usertestanswer_id"),
-        inverseJoinColumns = @JoinColumn(name = "answer_id"))
-    private Set<Answer> answers = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("user_test_answer")
+    private Answer answer;
 
 
     public Long getId() {
@@ -45,11 +45,11 @@ public class UserTestAnswer implements Serializable {
         this.usertests = usertests;
     }
 
-    public Set<Answer> getAnswers() {
-        return answers;
+    public Answer getAnswer() {
+        return answer;
     }
 
-    public void setAnswers(Set<Answer> answers) {
-        this.answers = answers;
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
     }
 }

@@ -1,21 +1,13 @@
-package tr.com.metix.testproject.domain;
+package tr.com.metix.testproject.service.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
+public class TestDTO {
 
-@Entity
-public class Test implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    //@Column(name = "test_id")
     private Long id;
 
     private String name;
 
     private String category;
-
 
     public Long getId() {
         return id;

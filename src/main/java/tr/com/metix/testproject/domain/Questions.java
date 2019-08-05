@@ -11,7 +11,7 @@ public class Questions implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "question_id")
+    //@Column(name = "question_id")
     private Long id;
 
     private String value;

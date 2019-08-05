@@ -11,7 +11,7 @@ public class UserTest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "usertest_id")
+    //@Column(name = "usertest_id")
     private Long id;
 
     @ManyToMany
