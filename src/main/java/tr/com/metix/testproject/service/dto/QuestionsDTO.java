@@ -1,5 +1,8 @@
 package tr.com.metix.testproject.service.dto;
 
+import tr.com.metix.testproject.domain.Test;
+
+import java.util.List;
 import java.util.Set;
 
 public class QuestionsDTO {
@@ -9,7 +12,7 @@ public class QuestionsDTO {
 
     private String value;
 
-    private Set<Long> testId;
+    private List<TestDTO> testDTOS;
 
     public Long getId() {
         return id;
@@ -27,11 +30,12 @@ public class QuestionsDTO {
         this.value = value;
     }
 
-    public Set<Long> getTestId() {
-        return testId;
+
+    public List<TestDTO> getTestDTOS() {
+        return testDTOS;
     }
 
-    public void setTestId(Set<Long> testId) {
-        this.testId = testId;
+    public void setTestDTOS(List<TestDTO> testDTOS) {
+        this.testDTOS = testDTOS;
     }
 }

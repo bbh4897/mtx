@@ -13,10 +13,10 @@ public interface AnswerMapper {
 
     AnswerMapper INSTANCE = Mappers.getMapper(AnswerMapper.class);
 
-    @Mapping(source = "questions.id", target = "questionsId")
+    @Mapping(source = "questions", target = "questionsDTO")
     AnswerDTO answerToAnswerDTO(Answer answer);
 
-    @Mapping(source = "questionsId", target = "questions.id")
+    @Mapping(source = "questionsDTO", target = "questions")
     Answer answerDTOToAnswer(AnswerDTO answerDTO);
 
 }

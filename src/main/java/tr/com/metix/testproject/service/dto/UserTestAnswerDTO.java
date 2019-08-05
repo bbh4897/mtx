@@ -1,11 +1,12 @@
 package tr.com.metix.testproject.service.dto;
 
+import java.util.List;
 import java.util.Set;
 
 public class UserTestAnswerDTO {
 
     private Long id;
-    private Set<Long> userTestId;
+    private List<UserTestDTO> userTestDTOS;
     private Long answerId;
 
 
@@ -17,12 +18,12 @@ public class UserTestAnswerDTO {
         this.id = id;
     }
 
-    public Set<Long> getUserTestId() {
-        return userTestId;
+    public List<UserTestDTO> getUserTestDTOS() {
+        return userTestDTOS;
     }
 
-    public void setUserTestId(Set<Long> userTestId) {
-        this.userTestId = userTestId;
+    public void setUserTestDTOS(List<UserTestDTO> userTestDTOS) {
+        this.userTestDTOS = userTestDTOS;
     }
 
     public Long getAnswerId() {

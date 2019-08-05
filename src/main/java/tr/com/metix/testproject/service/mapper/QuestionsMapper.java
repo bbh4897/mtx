@@ -12,9 +12,9 @@ public interface QuestionsMapper {
 
     QuestionsMapper INSTANCE = Mappers.getMapper(QuestionsMapper.class);
 
-    @Mapping(source = "test.id", target = "testId")
+    @Mapping(source = "tests", target = "testDTOS")
     QuestionsDTO questionsToQuestionsDTO(Questions questions);
 
-    @Mapping(source = "testId", target = "test.id")
+    @Mapping(source = "testDTOS", target = "tests")
     Questions questionsDTOToQuestions(QuestionsDTO questionsDTO);
 }

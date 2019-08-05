@@ -1,5 +1,6 @@
 package tr.com.metix.testproject.service.dto;
 
+import java.util.List;
 import java.util.Set;
 
 public class AnswerDTO {
@@ -7,7 +8,7 @@ public class AnswerDTO {
     private Long id;
     private String value;
 
-    private Set<Long> questionsId;
+    private List<QuestionsDTO> questionsDTO;
 
     private boolean isCorrect;
 
@@ -28,12 +29,12 @@ public class AnswerDTO {
         this.value = value;
     }
 
-    public Set<Long> getQuestionsId() {
-        return questionsId;
+    public List<QuestionsDTO> getQuestionsDTO() {
+        return questionsDTO;
     }
 
-    public void setQuestionsId(Set<Long> questionsId) {
-        this.questionsId = questionsId;
+    public void setQuestionsDTO(List<QuestionsDTO> questionsDTO) {
+        this.questionsDTO = questionsDTO;
     }
 
     public boolean isCorrect() {

@@ -1,12 +1,13 @@
 package tr.com.metix.testproject.service.dto;
 
+import java.util.List;
 import java.util.Set;
 
 public class UserTestDTO {
 
     private Long id;
-    private Set<Long> userId;
-    private Set<Long> testId;
+    private List<UserDTO> userDTOS;
+    private List<TestDTO> testDTOS;
     private String status;
     private Long score;
 
@@ -18,20 +19,20 @@ public class UserTestDTO {
         this.id = id;
     }
 
-    public Set<Long> getUserId() {
-        return userId;
+    public List<UserDTO> getUserDTOS() {
+        return userDTOS;
     }
 
-    public void setUserId(Set<Long> userId) {
-        this.userId = userId;
+    public void setUserDTOS(List<UserDTO> userDTOS) {
+        this.userDTOS = userDTOS;
     }
 
-    public Set<Long> getTestId() {
-        return testId;
+    public List<TestDTO> getTestDTOS() {
+        return testDTOS;
     }
 
-    public void setTestId(Set<Long> testId) {
-        this.testId = testId;
+    public void setTestDTOS(List<TestDTO> testDTOS) {
+        this.testDTOS = testDTOS;
     }
 
     public String getStatus() {
