@@ -1,4 +1,6 @@
 package tr.com.metix.testproject.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -6,23 +8,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Questions implements Serializable {
+@Table(name = "question")
+public class Question implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    //@Column(name = "question_id")
+    @Column(name="id")
     private Long id;
 
+    @Column(name="value")
     private String value;
 
     @ManyToMany
+    @JsonIgnoreProperties
     @JoinTable(name = "question_test",
         joinColumns = @JoinColumn(name = "question_id"),
         inverseJoinColumns = @JoinColumn(name = "test_id"))
-    private Set<Test> tests = new HashSet<>();
+    private Set<Test> test = new HashSet<>();
 
+    public Set<Test> getTest() {
+        return test;
+    }
 
+    public void setTest(Set<Test> test) {
+        this.test = test;
+    }
 
     public Long getId() {
         return id;
@@ -38,14 +49,5 @@ public class Questions implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-
-    public Set<Test> getTests() {
-        return tests;
-    }
-
-    public void setTests(Set<Test> tests) {
-        this.tests = tests;
     }
 }

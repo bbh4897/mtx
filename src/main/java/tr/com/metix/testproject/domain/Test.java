@@ -4,18 +4,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "test")
 public class Test implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    //@Column(name = "test_id")
+    @Column(name="id")
     private Long id;
 
+    @Column(name="name")
     private String name;
 
+    @Column(name="category")
     private String category;
-
 
     public Long getId() {
         return id;
@@ -40,4 +41,6 @@ public class Test implements Serializable {
     public void setCategory(String category) {
         this.category = category;
     }
+
+
 }

@@ -6,30 +6,48 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "user_test")
 public class UserTest implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    //@Column(name = "usertest_id")
+    @Column(name="id")
     private Long id;
+
+    @Column(name="status")
+    private String status;
+
+    @Column(name="score")
+    private Long score;
 
     @ManyToMany
     @JoinTable(name = "usertest_user",
-        joinColumns = @JoinColumn(name = "usertest_id"),
+        joinColumns = @JoinColumn(name = "user_test_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    private Set<User> user = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "usertest_test",
-        joinColumns = @JoinColumn(name = "usertest_id"),
+        joinColumns = @JoinColumn(name = "user_test_id"),
         inverseJoinColumns = @JoinColumn(name = "test_id"))
-    private Set<Test> tests = new HashSet<>();
+    private Set<Test> test = new HashSet<>();
 
-    private String status;
+    public Set<User> getUser() {
+        return user;
+    }
 
-    private Long score;
+    public void setUser(Set<User> user) {
+        this.user = user;
+    }
 
+    public Set<Test> getTest() {
+        return test;
+    }
+
+    public void setTest(Set<Test> test) {
+        this.test = test;
+    }
 
     public Long getId() {
         return id;
@@ -37,22 +55,6 @@ public class UserTest implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public Set<Test> getTests() {
-        return tests;
-    }
-
-    public void setTests(Set<Test> tests) {
-        this.tests = tests;
     }
 
     public String getStatus() {
@@ -70,4 +72,5 @@ public class UserTest implements Serializable {
     public void setScore(Long score) {
         this.score = score;
     }
+
 }
