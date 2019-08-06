@@ -2,7 +2,6 @@ package tr.com.metix.testproject.web.rest;
 
 
 
-
 import org.springframework.web.bind.annotation.*;
 
 
