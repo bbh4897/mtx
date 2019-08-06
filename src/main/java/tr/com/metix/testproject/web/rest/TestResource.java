@@ -24,9 +24,9 @@ public class TestResource {
     }
 
     @PostMapping("/testcreate")
-    public Test createTest(@Valid @RequestBody TestDTO testDTO) {
+    public TestDTO createTest(@Valid @RequestBody TestDTO testDTO) {
 
-        Test test = testService.createTest(testDTO);
+        TestDTO test = testService.createTest(testDTO);
         return test;
     }
 
