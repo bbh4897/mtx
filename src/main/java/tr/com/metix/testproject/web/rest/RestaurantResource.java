@@ -3,7 +3,9 @@ package tr.com.metix.testproject.web.rest;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metix.testproject.service.RestaurantService;
 import tr.com.metix.testproject.service.dto.RestaurantDTO;
+import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -27,6 +29,15 @@ public class RestaurantResource {
     @GetMapping("/restaurants")
     public List<RestaurantDTO> selectRestaurant() {
         return restaurantService.getRestaurant();
+    }
+
+
+    @PostMapping("/restaurantcreate")
+    public RestaurantDTO createQuestion(@RequestBody RestaurantDTO restaurantDTO) throws URISyntaxException {
+
+
+        RestaurantDTO restaurantDTO1 = restaurantService.createRestaurant(restaurantDTO);
+        return restaurantDTO1;
     }
 
 

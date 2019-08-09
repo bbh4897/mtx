@@ -56,4 +56,17 @@ public class RestaurantService {
     }
 
 
+
+    public RestaurantDTO createRestaurant (RestaurantDTO restaurantDTO) throws BadRequestAlertException {
+
+        if (restaurantDTO.getId() != null) {
+            throw new BadRequestAlertException("Bu id'ye sahip restaurant zaten kayır edilmiş !! ", null, "idexists");
+        }
+
+        Restaurant restaurant1 = restaurantMapper.toEntity(restaurantDTO);
+        restaurant1 = restaurantRepository.save(restaurant1);
+        return restaurantMapper.toDTO(restaurant1);
+    }
+
+
 }
