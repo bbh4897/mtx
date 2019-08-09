@@ -1,10 +1,10 @@
 package tr.com.metix.testproject.web.rest;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tr.com.metix.testproject.service.RestaurantService;
+import tr.com.metix.testproject.service.dto.RestaurantDTO;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +21,12 @@ public class RestaurantResource {
 
         restaurantService.deleteRestaurant(id);
 
+    }
+
+
+    @GetMapping("/restaurants")
+    public List<RestaurantDTO> selectRestaurant() {
+        return restaurantService.getRestaurant();
     }
 
 

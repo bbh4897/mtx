@@ -8,9 +8,14 @@ import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.RestaurantRepository;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.SecurityUtils;
+import tr.com.metix.testproject.service.dto.RestaurantDTO;
+import tr.com.metix.testproject.service.mapper.RestaurantMapper;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,11 +24,13 @@ public class RestaurantService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantMapper restaurantMapper;
 
-    public RestaurantService(UserService userService, UserRepository userRepository, RestaurantRepository restaurantRepository) {
+    public RestaurantService(UserService userService, UserRepository userRepository, RestaurantRepository restaurantRepository, RestaurantMapper restaurantMapper) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
+        this.restaurantMapper = restaurantMapper;
     }
 
 
@@ -41,5 +48,12 @@ public class RestaurantService {
         restaurantRepository.deleteById(id);
 
     }
+
+
+    public List<RestaurantDTO> getRestaurant(){
+        List<RestaurantDTO>  restaurant = restaurantRepository.findAll().stream().map(restaurantMapper::toDTO).collect(Collectors.toCollection(LinkedList::new));
+        return restaurant;
+    }
+
 
 }
