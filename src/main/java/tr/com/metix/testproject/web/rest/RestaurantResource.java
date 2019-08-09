@@ -3,7 +3,6 @@ package tr.com.metix.testproject.web.rest;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metix.testproject.service.RestaurantService;
 import tr.com.metix.testproject.service.dto.RestaurantDTO;
-import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
 import java.net.URISyntaxException;
 import java.util.List;
