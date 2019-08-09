@@ -40,5 +40,12 @@ public class RestaurantResource {
         return restaurantDTO1;
     }
 
+    @PutMapping("/restaurantupdate")
+    public RestaurantDTO updateRestaurant (@RequestBody RestaurantDTO restaurantDTO) throws URISyntaxException {
+
+        RestaurantDTO restaurantDTO1 = restaurantService.updateRestaurant(restaurantDTO);
+        return restaurantDTO1;
+    }
+
 
 }

@@ -69,4 +69,27 @@ public class RestaurantService {
     }
 
 
+    public RestaurantDTO updateRestaurant (RestaurantDTO restaurantDTO) throws BadRequestAlertException {
+
+        if (restaurantDTO.getId() == null) {
+            throw new BadRequestAlertException("geçersiz ID ! ", null, "idnull");
+        }
+
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
+        Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantDTO.getId()); // currentUser uyusan ıdnın tum satırı
+
+        System.out.println(" Current : " + u.get().getId());
+        System.out.println(" Restaurant : " +restaurant.get().getUser().getId());
+
+        if (u.get().getId() != restaurant.get().getUser().getId()) {
+            throw new BadRequestAlertException("Yalnızca Restaurant Sahibi Restaurant güncelleyebilir!! ", null, "test");
+        }
+
+
+        Restaurant restaurant1 = restaurantMapper.toEntity(restaurantDTO);
+        restaurant1 = restaurantRepository.save(restaurant1);
+        return restaurantMapper.toDTO(restaurant1);
+    }
+
+
 }
