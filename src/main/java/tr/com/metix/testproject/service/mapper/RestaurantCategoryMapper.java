@@ -1,5 +1,6 @@
 package tr.com.metix.testproject.service.mapper;
 
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

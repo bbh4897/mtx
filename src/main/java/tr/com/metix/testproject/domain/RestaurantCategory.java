@@ -1,6 +1,5 @@
 package tr.com.metix.testproject.domain;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 

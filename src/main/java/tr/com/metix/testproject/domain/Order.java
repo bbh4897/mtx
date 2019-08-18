@@ -1,5 +1,4 @@
 package tr.com.metix.testproject.domain;
-
 import org.springframework.format.datetime.joda.DateTimeParser;
 
 import javax.persistence.*;

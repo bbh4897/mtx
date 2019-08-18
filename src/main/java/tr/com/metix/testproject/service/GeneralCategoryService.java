@@ -1,15 +1,16 @@
 package tr.com.metix.testproject.service;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.com.metix.testproject.domain.GeneralCategory;
 import tr.com.metix.testproject.domain.Restaurant;
 import tr.com.metix.testproject.domain.RestaurantCategory;
 import tr.com.metix.testproject.domain.User;
-import tr.com.metix.testproject.repository.RestaurantCategoryRepository;
+import tr.com.metix.testproject.repository.GeneralCategoryRepository;
 import tr.com.metix.testproject.repository.RestaurantRepository;
 import tr.com.metix.testproject.security.SecurityUtils;
+import tr.com.metix.testproject.service.dto.GeneralCategoryDTO;
 import tr.com.metix.testproject.service.dto.RestaurantCategoryDTO;
-import tr.com.metix.testproject.service.mapper.RestaurantCategoryMapper;
+import tr.com.metix.testproject.service.mapper.GeneralCategoryMapper;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
 import java.util.ArrayList;
@@ -20,30 +21,28 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class RestaurantCategoryService {
+public class GeneralCategoryService {
 
-    private final RestaurantCategoryRepository restaurantCategoryRepository;
-    private final RestaurantCategoryMapper restaurantCategoryMapper;
+    private final GeneralCategoryRepository generalCategoryRepository;
+    private final GeneralCategoryMapper generalCategoryMapper;
     private final UserService userService;
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantCategoryService(RestaurantCategoryRepository restaurantCategoryRepository, RestaurantCategoryMapper restaurantCategoryMapper, UserService userService, RestaurantRepository restaurantRepository) {
-        this.restaurantCategoryRepository = restaurantCategoryRepository;
-        this.restaurantCategoryMapper = restaurantCategoryMapper;
+    public GeneralCategoryService(GeneralCategoryRepository generalCategoryRepository, GeneralCategoryMapper generalCategoryMapper, UserService userService, RestaurantRepository restaurantRepository) {
+        this.generalCategoryRepository = generalCategoryRepository;
+        this.generalCategoryMapper = generalCategoryMapper;
         this.userService = userService;
         this.restaurantRepository = restaurantRepository;
     }
 
-
-    public List<RestaurantCategoryDTO> getRestaurantCategory(){
-        List<RestaurantCategoryDTO>  restaurant = restaurantCategoryRepository.findAll().stream().map(restaurantCategoryMapper::toDTO).collect(Collectors.toCollection(LinkedList::new));
-        return restaurant;
+    public List<GeneralCategoryDTO> getGeneralCategory(){
+        List<GeneralCategoryDTO>  generalCategory = generalCategoryRepository.findAll().stream().map(generalCategoryMapper::toDTO).collect(Collectors.toCollection(LinkedList::new));
+        return generalCategory;
     }
 
+    public GeneralCategoryDTO createGC (GeneralCategoryDTO generalCategoryDTO) throws BadRequestAlertException {
 
-    public RestaurantCategoryDTO createRestaurant (RestaurantCategoryDTO restaurantCategoryDTO) throws BadRequestAlertException {
-
-        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tm satı
         List<Restaurant> restaurants = restaurantRepository.findAllByUser_Id(u.get().getId()); // currentUser'ın sahıp old. tum restaurantların lıstesı
 
         List<Long> restaurantsId = new ArrayList<>();
@@ -59,29 +58,27 @@ public class RestaurantCategoryService {
             restaurantsId.add(restaurants.get(i).getId());
         }
 
-//        System.out.println("IDELR : " + restaurantsId);
+        System.out.println("IDELR : " + restaurantsId);
 
-        if(!restaurantsId.contains(restaurantCategoryDTO.getRestaurantId())){
+        if ( !restaurantsId.contains(generalCategoryDTO.getRestaurants().stream().findFirst().get().getId()) ) {
 //            System.out.println("İCEREN : " + restaurantCategoryDTO.getRestaurantId());
-            throw new BadRequestAlertException("Yalnızca sahibi olduğunuz Restaurant'a kategori ekleyebilirsiniz", null, "idexists");
+            throw new BadRequestAlertException("Yalnızca sahibi olduğunuz Restaurant'a genel kategori ekleyebilirsiniz", null, "idexists");
         }
 
+        GeneralCategory generalCategory = generalCategoryMapper.toEntity(generalCategoryDTO);
 
-        RestaurantCategory restaurantCategory = restaurantCategoryMapper.toEntity(restaurantCategoryDTO);
-
-        restaurantCategory = restaurantCategoryRepository.save(restaurantCategory);
-        return restaurantCategoryMapper.toDTO(restaurantCategory);
+        generalCategory = generalCategoryRepository.save(generalCategory);
+        return generalCategoryMapper.toDTO(generalCategory);
 
     }
 
-
-    public void deleteRestaurantCategory(Long id) throws BadRequestAlertException {
+    public void deleteGeneralCategory(Long id) throws BadRequestAlertException {
 
         Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser um satır
-        Optional<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findById(id); // currentUser uyusan ıdnın tum satırı
+        Optional<GeneralCategory> generalCategory = generalCategoryRepository.findById(id); // currentUser uyusan ıdnın tum satırı
 
-        if(!restaurantCategory.isPresent()){
-            throw new BadRequestAlertException("Bu id'ye sahip restaurant kategori bulunamadı", null, "test");
+        if(!generalCategory.isPresent()){
+            throw new BadRequestAlertException("Bu id'ye sahip genel kategori bulunamadı", null, "test");
         }
 
         List<Restaurant> restaurants = restaurantRepository.findAllByUser_Id(u.get().getId()); // currentUser'ın sahıp old. tum restaurantların lıstesı
@@ -101,22 +98,23 @@ public class RestaurantCategoryService {
 
 //        System.out.println("IDELR : " + restaurantsId);
 
-        if(!restaurantsId.contains(restaurantCategory.get().getRestaurant().getId())){
+        if(!restaurantsId.contains(generalCategory.get().getRestaurants().stream().findFirst().get().getId())){
 //            System.out.println("İCEREN : " + restaurantCategoryDTO.getRestaurantId());
-            throw new BadRequestAlertException("Yalnızca sahibi olduğunuz Restaurant'ın kategorisini silebılırsınız", null, "idexists");
+            throw new BadRequestAlertException("Yalnızca sahibi olduğunuz Restaurant'ın genel kategorisini silebılırsınız", null, "idexists");
         }
 
-        restaurantCategoryRepository.deleteById(id);
+        generalCategoryRepository.deleteById(id);
 
     }
 
-    public RestaurantCategoryDTO updateRestaurantCategory(RestaurantCategoryDTO restaurantCategoryDTO) throws BadRequestAlertException {
+
+    public GeneralCategoryDTO updateGeneralCategory(GeneralCategoryDTO generalCategoryDTO) throws BadRequestAlertException {
 
         Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser um satır
-        Optional<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findById(restaurantCategoryDTO.getId()); // currentUser uyusan ıdnın tum satırı
+        Optional<GeneralCategory> generalCategory = generalCategoryRepository.findById(generalCategoryDTO.getId()); // currentUser uyusan ıdnın tum satırı
 
-        if (!restaurantCategory.isPresent()) {
-            throw new BadRequestAlertException("Bu id'ye sahip restaurant kategorisi bulunamadı! ", null, "idnull");
+        if (!generalCategory.isPresent()) {
+            throw new BadRequestAlertException("Bu id'ye sahip genel kategori bulunamadı! ", null, "idnull");
         }
 
         List<Restaurant> restaurants = restaurantRepository.findAllByUser_Id(u.get().getId()); // currentUser'ın sahıp old. tum restaurantların lıstesı
@@ -136,20 +134,20 @@ public class RestaurantCategoryService {
 
 //        System.out.println("IDELR : " + restaurantsId);
 
-        if(!restaurantsId.contains(restaurantCategory.get().getRestaurant().getId())){
+        if(!restaurantsId.contains(generalCategory.get().getRestaurants().stream().findFirst().get().getId())){
 //            System.out.println("İCEREN : " + restaurantCategoryDTO.getRestaurantId());
-            throw new BadRequestAlertException("Yalnızca sahibi olduğunuz Restaurant'ın kategorisini güncelleyebılırsınız", null, "idexists");
+            throw new BadRequestAlertException("Yalnızca sahibi olduğunuz Restaurant'ın genel kategorisini güncelleyebılırsınız", null, "idexists");
         }
 
-        if(!restaurantsId.contains(restaurantCategoryDTO.getRestaurantId())){
+        if(!restaurantsId.contains(generalCategoryDTO.getRestaurants().stream().findFirst().get().getId())){
             throw new BadRequestAlertException("Güncellemek istediğiniz restaurantId sıze aıt degıl", null, "idexists");
         }
 
 
-        RestaurantCategory restaurantCategory1 = restaurantCategoryMapper.toEntity(restaurantCategoryDTO);
+        GeneralCategory generalCategory1 = generalCategoryMapper.toEntity(generalCategoryDTO);
 
-        restaurantCategory1 = restaurantCategoryRepository.save(restaurantCategory1);
-        return restaurantCategoryMapper.toDTO(restaurantCategory1);
+        generalCategory1 = generalCategoryRepository.save(generalCategory1);
+        return generalCategoryMapper.toDTO(generalCategory1);
     }
 
 

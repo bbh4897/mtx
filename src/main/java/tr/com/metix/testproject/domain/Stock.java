@@ -1,6 +1,5 @@
 package tr.com.metix.testproject.domain;
 
-
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;

@@ -10,18 +10,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class RestaurantResource {
+
     private final RestaurantService restaurantService;
 
     public RestaurantResource(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
-    }
-
-
-    @DeleteMapping("/restaurantdelete/{id}")
-    public void deleteUser(@PathVariable Long id) {
-
-        restaurantService.deleteRestaurant(id);
-
     }
 
 
@@ -32,11 +25,18 @@ public class RestaurantResource {
 
 
     @PostMapping("/restaurantcreate")
-    public RestaurantDTO createQuestion(@RequestBody RestaurantDTO restaurantDTO) throws URISyntaxException {
+    public RestaurantDTO createRestaurant(@RequestBody RestaurantDTO restaurantDTO) throws URISyntaxException {
 
 
         RestaurantDTO restaurantDTO1 = restaurantService.createRestaurant(restaurantDTO);
         return restaurantDTO1;
+    }
+
+    @DeleteMapping("/restaurantdelete/{id}")
+    public void deleteRestaurant(@PathVariable Long id) {
+
+        restaurantService.deleteRestaurant(id);
+
     }
 
     @PutMapping("/restaurantupdate")

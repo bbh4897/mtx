@@ -3,7 +3,6 @@ package tr.com.metix.testproject.web.rest;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metix.testproject.service.RestaurantCategoryService;
 import tr.com.metix.testproject.service.dto.RestaurantCategoryDTO;
-import tr.com.metix.testproject.service.dto.RestaurantDTO;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -18,32 +17,30 @@ public class RestaurantCategoryResource {
         this.restaurantCategoryService = restaurantCategoryService;
     }
 
-    @PutMapping("/restaurantCategoryupdate")
-    public RestaurantCategoryDTO updateRestaurantCategory (@RequestBody RestaurantCategoryDTO restaurantCategoryDTO) throws URISyntaxException {
 
-        RestaurantCategoryDTO restaurantDTO1 = restaurantCategoryService.updateRestaurantCategory(restaurantCategoryDTO);
-        return restaurantCategoryDTO;
+    @GetMapping("/restaurantCategories")
+    public List<RestaurantCategoryDTO> selectRestaurant() {
+        return restaurantCategoryService.getRestaurantCategory();
+    }
+
+    @PostMapping("/restaurantCategorycreate")
+    public RestaurantCategoryDTO createRestaurantCategory(@RequestBody RestaurantCategoryDTO restaurantCategoryDTO) throws URISyntaxException {
+
+        RestaurantCategoryDTO restaurantCategoryDTO1 = restaurantCategoryService.createRestaurant(restaurantCategoryDTO);
+        return restaurantCategoryDTO1;
     }
 
     @DeleteMapping("/restaurantCategorydelete/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteRestaurantCategory(@PathVariable Long id) {
 
         restaurantCategoryService.deleteRestaurantCategory(id);
 
     }
 
+    @PutMapping("/restaurantCategoryupdate")
+    public RestaurantCategoryDTO updateRestaurantCategory (@RequestBody RestaurantCategoryDTO restaurantCategoryDTO) throws URISyntaxException {
 
-    @GetMapping("/restaurantCategorys")
-    public List<RestaurantCategoryDTO> selectRestaurant() {
-        return restaurantCategoryService.getRestaurantCategory();
-    }
-
-
-    @PostMapping("/restaurantCategorycreate")
-    public RestaurantCategoryDTO createQuestion(@RequestBody RestaurantCategoryDTO restaurantDTO) throws URISyntaxException {
-
-
-        RestaurantCategoryDTO restaurantDTO1 = restaurantCategoryService.createRestaurantCategory(restaurantDTO);
-        return restaurantDTO1;
+        RestaurantCategoryDTO restaurantCategoryDTO1 = restaurantCategoryService.updateRestaurantCategory(restaurantCategoryDTO);
+        return restaurantCategoryDTO1;
     }
 }

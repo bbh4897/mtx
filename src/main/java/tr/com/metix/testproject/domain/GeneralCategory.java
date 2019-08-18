@@ -3,6 +3,8 @@ package tr.com.metix.testproject.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class GeneralCategory  implements Serializable
@@ -15,6 +17,13 @@ public class GeneralCategory  implements Serializable
 
     @Column(name = "generalcategory_name")
     private  String name;
+
+    @ManyToMany
+    @JoinTable(name = "generalcategory_restaurant",
+        joinColumns = @JoinColumn(name = "generalcategory_id"),
+        inverseJoinColumns = @JoinColumn(name = "restaurant_id"))
+    private Set<Restaurant> restaurants = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -30,5 +39,13 @@ public class GeneralCategory  implements Serializable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(Set<Restaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 }

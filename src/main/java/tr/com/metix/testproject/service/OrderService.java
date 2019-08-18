@@ -1,14 +1,11 @@
 package tr.com.metix.testproject.service;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.com.metix.testproject.domain.Order;
-import tr.com.metix.testproject.domain.Restaurant;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.OrderRepository;
 import tr.com.metix.testproject.security.SecurityUtils;
 import tr.com.metix.testproject.service.dto.OrderDTO;
-import tr.com.metix.testproject.service.dto.RestaurantDTO;
 import tr.com.metix.testproject.service.mapper.OrderMapper;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
@@ -21,30 +18,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class OrderService {
 
-    private final UserService userService;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final UserService userService;
 
-    public OrderService(UserService userService, OrderRepository orderRepository, OrderMapper orderMapper) {
-        this.userService = userService;
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, UserService userService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-    }
-
-
-    public void deleteOrder(Long id) throws BadRequestAlertException {
-        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
-        Optional<Order> order = orderRepository.findById(id); // currentUser uyusan ıdnın tum satırı
-
-//        System.out.println(" Current : " + u.get().getId());
-//        System.out.println(" Restaurant : " +restaurant.get().getUser().getId());
-
-        if (u.get().getId() != order.get().getUser().getId()) {
-            throw new BadRequestAlertException("Yalnızca Restaurant Sahibi Restaurant Silebilir!! ", null, "test");
-        }
-
-        orderRepository.deleteById(id);
-
+        this.userService = userService;
     }
 
 
@@ -53,40 +34,81 @@ public class OrderService {
         return order;
     }
 
+    public OrderDTO createOrder(OrderDTO orderDTO) throws BadRequestAlertException {
 
+        Optional<Order> order = orderRepository.findById(orderDTO.getId());
 
-    public OrderDTO createOrder (OrderDTO orderDTO) throws BadRequestAlertException {
-
-        if (orderDTO.getId() != null) {
-            throw new BadRequestAlertException("Bu id'ye sahip restaurant zaten kayır edilmiş !! ", null, "idexists");
-        }
-
-        Order order = orderMapper.toEntity(orderDTO);
-        order = orderRepository.save(order);
-        return orderMapper.toDTO(order);
-    }
-
-
-    public OrderDTO updateOrder (OrderDTO orderDTO) throws BadRequestAlertException {
-
-        if (orderDTO.getId() == null) {
-            throw new BadRequestAlertException("geçersiz ID ! ", null, "idnull");
+        if (order.isPresent()) {
+            throw new BadRequestAlertException("Bu id'ye sahip sipariş zaten kayıt edilmiş !! ", null, "idexists");
         }
 
         Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
-        Optional<Order> order = orderRepository.findById(orderDTO.getId()); // currentUser uyusan ıdnın tum satırı
 
-//        System.out.println(" Current : " + u.get().getId());
-//        System.out.println(" Restaurant : " +restaurant.get().getUser().getId());
+        if(u.get().getId()!=orderDTO.getUserId()){
+            throw new BadRequestAlertException("Sadece kendı ıd'niz uzerınden ekleme yapabılırsınız ", null, "idexists");
+        }
+
+        Order order1 = orderMapper.toEntity(orderDTO);
+
+        order1.setOrderDate(orderDTO.getOrderDate());
+        order1.setTotalPrice(orderDTO.getTotalPrice());
+        order1.setUser(u.get());
+
+
+        order1 = orderRepository.save(order1);
+        return orderMapper.toDTO(order1);
+    }
+
+    public void deleteOrder(Long id) throws BadRequestAlertException {
+
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
+        Optional<Order> order = orderRepository.findById(id); // currentUser uyusan ıdnın tum satırı
+
+        if(!order.isPresent()){
+            throw new BadRequestAlertException("Bu id'ye sahip sipariş bulunamadı", null, "test");
+        }
 
         if (u.get().getId() != order.get().getUser().getId()) {
-            throw new BadRequestAlertException("Yalnızca Müşteri Restaurant Silebilir!! ", null, "test");
+            throw new BadRequestAlertException("Yalnızca Sipariş Sahibi Sipariş Silebilir!! ", null, "test");
+        }
+
+        /////// restcategory tablosunda rest_id oldugu ıcın once restcategory tablosundan sılınıp sonra restauranttan sılmeye ızın verıyor
+//        Optional<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findAllByRestaurant_Id(restaurant.get().getId());
+//        restaurantCategoryRepository.deleteById(restaurantCategory.get().getId());
+        //////////////
+
+        orderRepository.deleteById(id);
+
+    }
+
+    public OrderDTO updateOrder (OrderDTO orderDTO) throws BadRequestAlertException {
+
+        Optional<Order> order = orderRepository.findById(orderDTO.getId());
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
+
+        if (!order.isPresent()) {
+            throw new BadRequestAlertException("Bu id'ye sahip sipariş bulunamadı! ", null, "idnull");
+        }
+
+        if (u.get().getId() != order.get().getUser().getId()) {
+            throw new BadRequestAlertException("Yalnızca Sipariş Sahibi Sipariş güncelleyebilir!! ", null, "test");
+        }
+
+        if(orderDTO.getUserId()!= u.get().getId()){
+            throw new BadRequestAlertException("Güncellemek istediğiniz userID sıze aıt degıl", null, "idexists");
         }
 
 
         Order order1 = orderMapper.toEntity(orderDTO);
+
+        order1.setOrderDate(orderDTO.getOrderDate());
+        order1.setTotalPrice(orderDTO.getTotalPrice());
+        order1.setUser(u.get());
+
+
         order1 = orderRepository.save(order1);
         return orderMapper.toDTO(order1);
     }
+
 
 }
