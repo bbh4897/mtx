@@ -7,7 +7,7 @@ public class OrderDTO {
     private Long id;
     private Date orderDate;
     private  Long userId;
-    private  int totalPrice;
+
 
     public Long getId() {
         return id;
@@ -33,11 +33,4 @@ public class OrderDTO {
         this.userId = userId;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }

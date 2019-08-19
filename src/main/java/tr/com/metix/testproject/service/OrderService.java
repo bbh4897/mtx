@@ -51,7 +51,6 @@ public class OrderService {
         Order order1 = orderMapper.toEntity(orderDTO);
 
         order1.setOrderDate(orderDTO.getOrderDate());
-        order1.setTotalPrice(orderDTO.getTotalPrice());
         order1.setUser(u.get());
 
 
@@ -102,7 +101,6 @@ public class OrderService {
         Order order1 = orderMapper.toEntity(orderDTO);
 
         order1.setOrderDate(orderDTO.getOrderDate());
-        order1.setTotalPrice(orderDTO.getTotalPrice());
         order1.setUser(u.get());
 
 

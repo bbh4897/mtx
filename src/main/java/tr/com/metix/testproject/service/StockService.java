@@ -8,12 +8,10 @@ import tr.com.metix.testproject.repository.RestaurantCategoryRepository;
 import tr.com.metix.testproject.repository.RestaurantRepository;
 import tr.com.metix.testproject.repository.StockRepository;
 import tr.com.metix.testproject.security.SecurityUtils;
-import tr.com.metix.testproject.service.dto.RestaurantCategoryDTO;
 import tr.com.metix.testproject.service.dto.StockDTO;
 import tr.com.metix.testproject.service.mapper.StockMapper;
 import tr.com.metix.testproject.web.rest.errors.BadRequestAlertException;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +37,7 @@ public class StockService {
         this.restaurantRepository = restaurantRepository;
     }
 
+
     public List<StockDTO> getStock(){
         List<StockDTO>  stock = stockRepository.findAll().stream().map(stockMapper::toDTO).collect(Collectors.toCollection(LinkedList::new));
         return stock;
@@ -49,8 +48,16 @@ public class StockService {
         Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tum satır
 
         Optional<Product> product = productRepository.findById(stockDTO.getProductId());
+
+
+        if(!product.isPresent()){
+            throw new BadRequestAlertException("Bu id'ye sahıp urun bulunmamaktadır", null, "idexists");
+        }
+
         Optional<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findById(product.get().getRestaurantCategory().getId());
         Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantCategory.get().getRestaurant().getId());
+
+
 
         if(u.get().getId()!=restaurant.get().getUser().getId()){
             throw new BadRequestAlertException("Yalnızca Sahıbı oldugunuz restauranta urun stoğu ekleyebılırsınız", null, "idexists");
@@ -59,7 +66,11 @@ public class StockService {
 
         Stock stock = stockMapper.toEntity(stockDTO);
 
+
         stock = stockRepository.save(stock);
+
+
+
         return stockMapper.toDTO(stock);
 
     }
@@ -98,6 +109,13 @@ public class StockService {
         }
 
         Optional<Product> product = productRepository.findById(stock1.get().getProducts().getId());
+
+        if(!product.isPresent()){
+            throw new BadRequestAlertException("Bu id'ye sahıp urun bulunmamaktadır", null, "idexists");
+        }
+
+
+
         Optional<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findById(product.get().getRestaurantCategory().getId());
         Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantCategory.get().getRestaurant().getId());
 
@@ -109,6 +127,7 @@ public class StockService {
         Stock stock = stockMapper.toEntity(stockDTO);
 
         stock = stockRepository.save(stock);
+        product.get().setStockTotalInput(stock.getStockInput());
         return stockMapper.toDTO(stock);
     }
 

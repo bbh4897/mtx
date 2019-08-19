@@ -6,6 +6,10 @@ public class ProductDTO {
     private  int price;
     private  Long restaurantCategoryId;
 
+
+    private int stockTotalOutput;
+
+
     public Long getId() {
         return id;
     }
@@ -37,4 +41,16 @@ public class ProductDTO {
     public void setRestaurantCategoryId(Long restaurantCategoryId) {
         this.restaurantCategoryId = restaurantCategoryId;
     }
+
+
+
+    public int getStockTotalOutput() {
+        return stockTotalOutput;
+    }
+
+    public void setStockTotalOutput(int stockTotalOutput) {
+        this.stockTotalOutput = stockTotalOutput;
+    }
+
+
 }

@@ -46,15 +46,13 @@ public class ProductService {
 
     public ProductDTO createProduct(ProductDTO productDTO) throws BadRequestAlertException {
 
-        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tuır
-        List<Restaurant> restaurants = restaurantRepository.findAllByUser_Id(u.get().getId()); // currentUser'ın sahıp old. tum restaurantların lıstesı
+        Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // curretUser tuır
+        List<Restaurant> restaurants = restaurantRepository.findAllByUser_Id(u.get().getId()); // currentUser'ın sahıp o tum resaurantların lıstesı
 
 
         List<Long> restaurantsId = new ArrayList<>();
         List<Long> restaurantCategoriesId = new ArrayList<>();
-//
-//        System.out.println("REstaurant current  : " + restaurants.get(0).getId());
-//        System.out.println("REstaurant current  : " + restaurants.get(1).getId());
+
 
         if(restaurants.isEmpty()){
             throw new BadRequestAlertException("Sahip olduğunuz bir restaurant yok ", null, "idexists");
@@ -66,7 +64,7 @@ public class ProductService {
 
         List<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findAllByRestaurant_IdIn(restaurantsId); // currentUser'ın sahıp old. tum restaurantların lıstesı
 
-        if(restaurantCategory.isEmpty()){
+        if(restaurantCategory.isEmpty()) {
             throw new BadRequestAlertException("Sahip olduğunuz bir restaurantCategory yok ", null, "idexists");
         }
 
@@ -81,6 +79,12 @@ public class ProductService {
 
         Product product = productMapper.toEntity(productDTO);
         product = productRepository.save(product);
+
+        Stock stock = new Stock();
+        stock.setStockInput(0);
+        stock.setProducts(product);
+        stock = stockRepository.save(stock);
+
         return productMapper.toDTO(product);
 
     }
@@ -132,6 +136,8 @@ public class ProductService {
         Optional<User> u = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()); // currentUser tuır
         List<Restaurant> restaurants = restaurantRepository.findAllByUser_Id(u.get().getId()); // currentUser'ın sahıp old. tum restaurantların lıstesı
         Optional<Product> product = productRepository.findById(productDTO.getId());
+        Optional<Stock> stock = stockRepository.findAllByProducts_Id(product.get().getId());
+
 
         if(!product.isPresent()){
             throw new BadRequestAlertException("Bu id'ye sahip urun bulunmamaktadır.", null, "idexists");
@@ -167,6 +173,9 @@ public class ProductService {
         }
 
         Product product1 = productMapper.toEntity(productDTO);
+
+
+
         product1 = productRepository.save(product1);
         return productMapper.toDTO(product1);
     }

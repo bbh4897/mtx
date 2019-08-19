@@ -1,4 +1,5 @@
 package tr.com.metix.testproject.domain;
+import org.hibernate.annotations.Formula;
 import org.springframework.format.datetime.joda.DateTimeParser;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Order implements Serializable
     private  User user;
 
     @Column(name = "totalPrice")
+    @Formula("(select sum(po.total_product_price)from product_order po inner join productorder_order p on po.id = p.productorder_id inner join productorder_product p2 on po.id = p2.productorder_id where p.order_id=id)")
     private  int totalPrice;
 
     public Long getId() {

@@ -23,6 +23,8 @@ public class Product implements Serializable
     @ManyToOne
     private  RestaurantCategory restaurantCategory;
 
+    @Column(name = "stock_total_output")
+    private  int stockTotalOutput;
 
     //
     @Column(name = "stock_total_input")
@@ -30,16 +32,10 @@ public class Product implements Serializable
     private  int stockTotalInput;
 
 
-    @Column(name = "stock_total_output")
-    private  int stockTotalOutput;
-
-
     @Transient
     @Column(name = "remaining_stok")
-    // @Formula("stockTotalInput-stockTotalOutput")
+    @Formula("stockTotalInput-stockTotalOutput")
     private  int remainingStok;
-
-
 
 
     public Long getId() {
