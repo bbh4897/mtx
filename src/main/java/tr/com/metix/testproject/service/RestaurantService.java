@@ -3,9 +3,11 @@ package tr.com.metix.testproject.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.com.metix.testproject.domain.GeneralCategory;
 import tr.com.metix.testproject.domain.Restaurant;
 import tr.com.metix.testproject.domain.RestaurantCategory;
 import tr.com.metix.testproject.domain.User;
+import tr.com.metix.testproject.repository.GeneralCategoryRepository;
 import tr.com.metix.testproject.repository.RestaurantCategoryRepository;
 import tr.com.metix.testproject.repository.RestaurantRepository;
 import tr.com.metix.testproject.security.SecurityUtils;
@@ -26,12 +28,14 @@ public class RestaurantService {
     private final RestaurantMapper restaurantMapper;
     private final UserService userService;
     private final RestaurantCategoryRepository restaurantCategoryRepository;
+    private final GeneralCategoryRepository generalCategoryRepository;
 
-    public RestaurantService(RestaurantRepository restaurantRepository, RestaurantMapper restaurantMapper, UserService userService, RestaurantCategoryRepository restaurantCategoryRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository, RestaurantMapper restaurantMapper, UserService userService, RestaurantCategoryRepository restaurantCategoryRepository, GeneralCategoryRepository generalCategoryRepository) {
         this.restaurantRepository = restaurantRepository;
         this.restaurantMapper = restaurantMapper;
         this.userService = userService;
         this.restaurantCategoryRepository = restaurantCategoryRepository;
+        this.generalCategoryRepository = generalCategoryRepository;
     }
 
 
@@ -82,10 +86,24 @@ public class RestaurantService {
             throw new BadRequestAlertException("Yalnızca Restaurant Sahibi Restaurant Silebilir!! ", null, "test");
         }
 
+
+
         /////// restcategory tablosunda rest_id oldugu ıcın once restcategory tablosundan sılınıp sonra restauranttan sılmeye ızın verıyor
         Optional<RestaurantCategory> restaurantCategory = restaurantCategoryRepository.findAllByRestaurant_Id(restaurant.get().getId());
-        restaurantCategoryRepository.deleteById(restaurantCategory.get().getId());
-        //////////////
+        List<GeneralCategory> generalCategory = generalCategoryRepository.findAllByRestaurants_Id(restaurant.get().getId());
+
+
+        if(restaurantCategory.isPresent()) {
+            restaurantCategoryRepository.deleteById(restaurantCategory.get().getId());
+           // restaurantRepository.deleteById(id);
+            //////////////
+        }
+
+        if(!generalCategory.isEmpty()){
+            for(int i=0;i<generalCategory.size();i++) {
+                generalCategoryRepository.deleteById(generalCategory.get(i).getId());
+            }
+        }
 
         restaurantRepository.deleteById(id);
 
