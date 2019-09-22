@@ -1,6 +1,7 @@
 package tr.com.metix.testproject.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,5 +23,10 @@ public class KafkaController {
     @PostMapping("/kafka")
     public void post(@RequestBody Kafka kafka){
         kafkaTemplate.send("kafkaObject", kafka);
+    }
+
+    @KafkaListener(topics = "kafkaObject")
+    public void getKafkaObject(Kafka kafka){
+        System.out.println("Consumer : " + kafka.toString());
     }
 }

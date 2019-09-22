@@ -1,6 +1,8 @@
 package tr.com.metix.testproject.web.rest;
 
+import org.springframework.kafka.annotation.KafkaListener;
 import tr.com.metix.testproject.config.Constants;
+import tr.com.metix.testproject.domain.Kafka;
 import tr.com.metix.testproject.domain.User;
 import tr.com.metix.testproject.repository.UserRepository;
 import tr.com.metix.testproject.security.AuthoritiesConstants;
@@ -190,4 +192,9 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }
+//    @KafkaListener(topics = "kafkaObject")
+//    public void getKafkaObject(Kafka kafka){
+//        System.out.println("USer Kafka : " + kafka.toString());
+//    }
+
 }
