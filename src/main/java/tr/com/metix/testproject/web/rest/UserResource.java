@@ -192,7 +192,7 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }
-//    @KafkaListener(topics = "kafkaObject")
+//    @KafkaListener(topics = "kafka2")
 //    public void getKafkaObject(Kafka kafka){
 //        System.out.println("USer Kafka : " + kafka.toString());
 //    }

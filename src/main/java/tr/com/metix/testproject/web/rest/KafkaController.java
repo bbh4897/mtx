@@ -22,11 +22,13 @@ public class KafkaController {
 
     @PostMapping("/kafka")
     public void post(@RequestBody Kafka kafka){
-        kafkaTemplate.send("kafkaObject", kafka);
+        for(int i=0; i<10;i++)
+        kafkaTemplate.send("kafka2", kafka);
     }
 
-    @KafkaListener(topics = "kafkaObject")
-    public void getKafkaObject(Kafka kafka){
+    @KafkaListener(topics = "kafka2")
+    public void getKafkaObject(Kafka kafka) throws InterruptedException {
         System.out.println("Consumer : " + kafka.toString());
+        Thread.sleep(2000);
     }
 }

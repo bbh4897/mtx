@@ -7,7 +7,7 @@ import tr.com.metix.testproject.domain.Kafka;
 @RestController
 public class TestController {
 
-//    @KafkaListener(topics = "kafkaObject")
+//    @KafkaListener(topics = "kafka2")
 //    public void getKafkaObject(Kafka kafka){
 //        System.out.println("Test Kafka : " + kafka.toString());
 //    }
