@@ -1,5 +1,9 @@
 package tr.com.metix.testproject;
 
+import org.aspectj.weaver.ast.Test;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import tr.com.metix.testproject.config.ApplicationProperties;
 import tr.com.metix.testproject.config.DefaultProfileUtil;
 
@@ -39,6 +43,8 @@ public class TestProjectApp implements InitializingBean {
      * <p>
      * You can find more information on how profiles work with JHipster on <a href="https://www.jhipster.tech/profiles/">https://www.jhipster.tech/profiles/</a>.
      */
+
+
     @Override
     public void afterPropertiesSet() throws Exception {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
@@ -55,8 +61,20 @@ public class TestProjectApp implements InitializingBean {
     /**
      * Main method, used to run the application.
      *
-     * @param args the command line arguments.
+     *
      */
+    @Bean
+    JedisConnectionFactory jedisConnectionFactory(){
+        return new JedisConnectionFactory();
+    }
+
+    @Bean
+    RedisTemplate<String, Test> redisTemplate(){
+        RedisTemplate<String,Test> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(jedisConnectionFactory());
+        return redisTemplate;
+    }
+
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(TestProjectApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
