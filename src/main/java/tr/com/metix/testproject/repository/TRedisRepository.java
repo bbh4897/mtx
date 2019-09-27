@@ -1,4 +1,10 @@
 package tr.com.metix.testproject.repository;
 
-public interface tRedisRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import tr.com.metix.testproject.domain.TestModel;
+
+@Repository
+public interface TRedisRepository extends CrudRepository<TestModel, Long> {
 }
+
