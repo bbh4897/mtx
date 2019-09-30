@@ -5,6 +5,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metix.testproject.domain.SModel;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 public class tRedisController {
@@ -16,14 +18,19 @@ public class tRedisController {
     }
 
 
-    @PostMapping("/add2")
+    @PostMapping("/add")
     public void post2(@RequestBody SModel sModel) {
-        hashOperations.put("redisT", sModel.getId(), sModel);
+        hashOperations.put("fff", sModel.getId(), sModel);
     }
 
-    @GetMapping("/all2/{id}")
+    @GetMapping("/get/{id}")
     public SModel get2(@PathVariable Long id) {
-        return (SModel) hashOperations.get("redisT", id);
+        return (SModel) hashOperations.get("fff", id);
+    }
+
+    @GetMapping("/all")
+    public Map<Long,SModel> findAll(){
+        return hashOperations.entries("fff");
     }
 
 
