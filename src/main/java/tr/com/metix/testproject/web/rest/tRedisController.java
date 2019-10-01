@@ -62,8 +62,6 @@ public class tRedisController {
 
         System.out.println("MAP : " + map.keySet());
 
-        System.out.println("aaaaaaaa : " + map.containsKey(2));
-
         if(map.isEmpty()){
             System.out.println("MAP BOŞ");
             for(int i=0;i<users.size();i++){
@@ -73,9 +71,14 @@ public class tRedisController {
         else{
             System.out.println("MAP BOŞ DEĞİL");
             System.out.println("MAP test : " + map.keySet());
+            System.out.println("wwwwww : " + map.containsKey(2));
 
-
-
+            for(int i=0; i<users.size();i++) {
+                if (map.containsKey(users.get(i).getId())) {
+                    System.out.println("OKKKKKK" + users.get(i).getId());
+                }
+            }
         }
+
     }
 }
